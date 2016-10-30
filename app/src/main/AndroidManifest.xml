@@ -52,6 +52,8 @@
             android:name=".AboutActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity android:name=".WelcomeActivity">
+        </activity>
     </application>
 
 </manifest>
