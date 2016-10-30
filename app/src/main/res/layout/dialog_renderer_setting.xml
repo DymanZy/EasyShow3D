@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="250dp"
+              android:layout_height="match_parent">
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="15dp"
+        android:text="渲染设置"
+        android:textSize="16sp"
+        android:textColor="@color/white"
+        android:background="@drawable/bg_round_up_green_dark"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/bg_round_down_white">
+        <TextView
+            android:id="@+id/lineRender_dialog_renderer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="线渲染"
+            android:textColor="@color/blank"
+            android:clickable="true"
+            android:background="?android:selectableItemBackground"/>
+        <TextView
+            android:id="@+id/trianglesRender_dialog_renderer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="面渲染"
+            android:textColor="@color/blank"
+            android:clickable="true"
+            android:background="?android:selectableItemBackground"/>
+    </LinearLayout>
+
+
+</LinearLayout>

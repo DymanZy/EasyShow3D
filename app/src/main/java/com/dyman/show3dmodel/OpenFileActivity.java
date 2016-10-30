@@ -1,0 +1,159 @@
+package com.dyman.show3dmodel;
+
+import android.content.Intent;
+import android.os.Environment;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.Toast;
+
+import com.dyman.show3dmodel.adapter.FolderListAdapter;
+import com.dyman.show3dmodel.adapter.listener.OnAdapterItemListener;
+import com.dyman.show3dmodel.bean.FolderBean;
+import com.dyman.show3dmodel.config.IntentKey;
+import com.dyman.show3dmodel.config.MyConfig;
+import com.dyman.show3dmodel.utils.ToastUtils;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *  文件列表菜单Activity
+ */
+public class OpenFileActivity extends BaseActivity implements View.OnClickListener{
+
+    private static final String TAG = "OpenFileActivity";
+    private LinearLayout openRootDir;
+    private RecyclerView folderRv;
+    private FolderListAdapter adapter;
+    private List<FolderBean> folderList = new ArrayList<>();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_open_file);
+        initToolbar();
+        initView();
+        initDatas();
+
+    }
+
+
+    private void initToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_activity_openFile);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                }, MyConfig.POST_DELAYED_TIME);
+            }
+        });
+    }
+
+
+    private void initView() {
+        openRootDir = (LinearLayout) findViewById(R.id.openRootDir_ll_activity_open_file);
+        folderRv = (RecyclerView) findViewById(R.id.frequentFolder_rv_activity_open_file);
+        folderRv.setLayoutManager(new LinearLayoutManager(this));
+        folderRv.setItemAnimator(new DefaultItemAnimator());
+        folderRv.setHasFixedSize(true);
+
+        openRootDir.setOnClickListener(this);
+        findViewById(R.id.stlFile_rl_activity_open_file).setOnClickListener(this);
+        findViewById(R.id.objFile_rl_activity_open_file).setOnClickListener(this);
+        findViewById(R.id.d3sFile_rl_activity_open_file).setOnClickListener(this);
+    }
+
+
+    private void initDatas() {
+        //能否改为动态检测常用文件夹？
+        String rootPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+        if (!folderList.isEmpty()) { folderList.clear(); }
+
+        FolderBean folderBean = new FolderBean();
+        folderBean.setFolderName("QQ");
+        folderBean.setFolderPath(rootPath+File.separator+"tencent"+File.separator+"QQfile_recv");
+        if (new File(folderBean.getFolderPath()).canRead()) {
+            folderList.add(folderBean);
+        } else {
+            Log.i(TAG, "---------------- invalid file path :"+folderBean.getFolderPath());
+        }
+
+        folderBean = new FolderBean();
+        folderBean.setFolderName("Download");
+        folderBean.setFolderPath(rootPath+File.separator+"Download");
+        if (new File(folderBean.getFolderPath()).canRead()) {
+            folderList.add(folderBean);
+        } else {
+            Log.i(TAG, "---------------- invalid file path :"+folderBean.getFolderPath());
+        }
+
+        folderBean = new FolderBean();
+        folderBean.setFolderName("我的文档");
+        folderBean.setFolderPath(rootPath+File.separator+"documents");
+        if (new File(folderBean.getFolderPath()).canRead()) {
+            folderList.add(folderBean);
+        } else {
+            Log.i(TAG, "---------------- invalid file path :"+folderBean.getFolderPath());
+        }
+
+        folderBean = new FolderBean();
+        folderBean.setFolderName("微信");
+        folderBean.setFolderPath(rootPath+File.separator+"tencent"+File.separator+"MicroMsg"+File.separator+"Download");
+        if (new File(folderBean.getFolderPath()).canRead()) {
+            folderList.add(folderBean);
+        } else {
+            Log.i(TAG, "---------------- invalid file path :"+folderBean.getFolderPath());
+        }
+
+        adapter = new FolderListAdapter(folderList);
+        adapter.setOnItemClickListener(new OnAdapterItemListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                FolderBean bean = folderList.get(position);
+                Intent it = new Intent(OpenFileActivity.this, FileDirectoryActivity.class);
+                it.putExtra(IntentKey.TITLE, bean.getFolderName());
+                it.putExtra(IntentKey.DIRECTORY_PATH, bean.getFolderPath());
+                startActivity(it);
+            }
+        });
+
+        folderRv.setAdapter(adapter);
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.openRootDir_ll_activity_open_file:
+                ToastUtils.showShort(OpenFileActivity.this, "打开手机目录");
+                Intent it = new Intent(OpenFileActivity.this, FileDirectoryActivity.class);
+                it.putExtra(IntentKey.TITLE, "手机");
+                it.putExtra(IntentKey.DIRECTORY_PATH, Environment.getExternalStorageDirectory().getAbsolutePath());
+                startActivity(it);
+                break;
+            case R.id.stlFile_rl_activity_open_file:
+                ToastUtils.showShort(OpenFileActivity.this, "查找stl文件");
+                break;
+            case R.id.objFile_rl_activity_open_file:
+                ToastUtils.showShort(OpenFileActivity.this, "查找obj文件");
+                break;
+            case R.id.d3sFile_rl_activity_open_file:
+                ToastUtils.showShort(OpenFileActivity.this, "查找3ds文件");
+                break;
+        }
+    }
+}

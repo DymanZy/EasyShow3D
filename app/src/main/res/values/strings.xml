@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Show3D</string>
+    <string name="open_file">打开</string>
+    <string name="frequently_used">常用</string>
+    <string name="action_settings">设置</string>
+    <string name="action_about">关于</string>
+
+    <string name="stl_load_progress_message">请等一会.</string>
+    <string name="stl_load_progress_title">STL 文件加载中...</string>
+    <string name="error_fetch_data">STL 文件解析失败.</string>
+    <string name="error_outbig"> 文件过大，解析失败！</string>
+    <string name="close_dialog">关闭对话框</string>
+    <string name="parent_directory">父目录</string>
+    <string name="choose_stl_file">选择STL文件</string>
+
+
+    <string name="app_description">这是一个浏览3D文件的app, 目前支持的文件格式有比较常用的STL、OBJ和3DS格式，暂不支持dwg、stp、igs等格式，将继续完善。</string>
+    <string name="author_email">Email：dyman.zy@gmail.com</string>
+    <string name="contact">如使用过程有任意疑问或建议，可以联系我。</string>
+</resources>

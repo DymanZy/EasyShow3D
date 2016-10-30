@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/openFolder_ll_item_frequent_folder"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="15dp"
+    android:background="?android:selectableItemBackground">
+    <TextView
+        android:id="@+id/folderName_tv_item_frequent_folder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="文件夹名称"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/cutOff"/>
+</LinearLayout>
