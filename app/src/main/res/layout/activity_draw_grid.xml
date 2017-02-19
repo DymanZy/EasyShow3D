@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_draw_grid"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.opengl.GLSurfaceView
+        android:id="@+id/id_mGLSurfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+
+</RelativeLayout>

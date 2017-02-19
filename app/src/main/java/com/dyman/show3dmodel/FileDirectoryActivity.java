@@ -35,7 +35,7 @@ import java.util.List;
  *  浏览文件列表的Activity
  *      配有目录级和当前目录下的文件列表
  */
-public class FileDirectoryActivity extends BaseActivity {
+public class FileDirectoryActivity extends BaseActivity implements OnAdapterItemListener{
 
     private static final String TAG = "FileDirectoryActivity";
 
@@ -48,9 +48,9 @@ public class FileDirectoryActivity extends BaseActivity {
     private FileRvListAdapter fileAdapter;
     private List<FileBean> fileList = new ArrayList<>();
 
-
     private String mDirectoryPath;
     private String mTitle;
+    private String mSearchType;
 
 
     @Override
@@ -61,9 +61,14 @@ public class FileDirectoryActivity extends BaseActivity {
         Intent it = getIntent();
         mTitle = it.getStringExtra(IntentKey.TITLE);
         mDirectoryPath = it.getStringExtra(IntentKey.DIRECTORY_PATH);
+        mSearchType = it.getStringExtra(IntentKey.KEY_TYPE);
         initToolbar();
         initView();
-        readDirectory(mDirectoryPath);
+        if (mSearchType.equals(IntentKey.DIRECTORY_KEY)) {
+            readDirectory(mDirectoryPath);
+        } else {
+            searchFile();
+        }
     }
 
 
@@ -96,6 +101,7 @@ public class FileDirectoryActivity extends BaseActivity {
         fileListRv.setItemAnimator(new DefaultItemAnimator());
         fileListRv.setHasFixedSize(true);
     }
+
 
     private void readDirectory(String path) {
         // 配置目录级
@@ -161,7 +167,7 @@ public class FileDirectoryActivity extends BaseActivity {
                 }
             }
         }
-        fileAdapter = new FileRvListAdapter(fileList);
+        fileAdapter = new FileRvListAdapter(this, fileList);
         fileAdapter.setOnItemClickListener(new OnAdapterItemListener() {
             @Override
             public void onItemClick(View v, int position) {
@@ -211,6 +217,83 @@ public class FileDirectoryActivity extends BaseActivity {
     }
 
 
+    private void searchFile() {
+        // 配置目录级
+        levelList.add(mSearchType);
+        adapter = new LevelAdapter(levelList);
+        directoryLevelRv.setAdapter(adapter);
+
+        //检索各个常用文件夹
+        String[] indexs = new String[]{MyConfig.QQFilePath, MyConfig.SystemDownloadPath, MyConfig.WPSFilePath, MyConfig.WXFilePath};
+        for (int i = 0; i < indexs.length; i++) {//--------for1
+            File[] files = new File(indexs[i]).listFiles();
+            if (files == null) {
+                Log.i(TAG, "searchFile: ------------目录："+indexs[i]+" 为空");
+            } else {
+                for (File file : files) {//--------for2
+                    if (!file.canRead()) {
+                        continue;
+                    }
+
+                    String fileType = FileUtils.getType(file.getName()).toLowerCase();
+                    if (isSupportType(fileType)) {
+                        FileBean bean = new FileBean();
+                        bean.setFileName(file.getName());
+                        bean.setFilePath(file.getAbsolutePath());
+                        bean.setFileType(FileUtils.getType(file.getAbsolutePath()));
+                        bean.setCreateTime(TimeUtils.getTimeFormat(file.lastModified()));
+                        fileList.add(bean);
+                    }
+                }//for2
+            }
+        }//for1
+        fileAdapter = new FileRvListAdapter(this, fileList);
+        fileAdapter.setOnItemClickListener(this);
+        fileListRv.setAdapter(fileAdapter);
+    }
+
+
+    private boolean isSupportType(String fileType) {
+        if (mSearchType.equals("stl_key")) {
+            if (fileType.equals("stl")) return true;
+        } else if (mSearchType.equals("obj_key")) {
+            if (fileType.equals("obj")) return true;
+        } else if (mSearchType.equals("3ds_key")) {
+            if (fileType.equals("3ds")) return true;
+        } else if (mSearchType.equals("doc_key")) {
+            if (fileType.equals("doc") || fileType.equals("docx")) return true;
+        } else if (mSearchType.equals("ppt_key")) {
+            if (fileType.equals("ppt") || fileType.equals("pptx")) return true;
+        } else if (mSearchType.equals("xls_key")) {
+            if (fileType.equals("xls") || fileType.equals("xlsx")) return true;
+        } else if (mSearchType.equals("pdf_key")) {
+            if (fileType.equals("pdf")) return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    public void onItemClick(View v, int position) {
+        //TODO
+        final String filepath = fileList.get(position).getFilePath();
+        File file = new File(filepath);
+        if (file.isDirectory()){
+            /** 延时300ms,以显示点击效果 */
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    readDirectory(filepath);
+
+                }
+            }, 500);
+        } else {
+            Log.e(TAG, "--------------------打开3D文件："+file.getName());
+            open3DFile(file);
+        }
+    }
+
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -225,6 +308,7 @@ public class FileDirectoryActivity extends BaseActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
 
     /**
      *  目录级的适配器

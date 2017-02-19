@@ -8,6 +8,8 @@ public class IntentKey {
     public static String DIRECTORY_PATH = "directory_path";
     public static String TITLE = "title";
     public static String DIRECTORY_NAME = "directory_name";
+    public static String KEY_TYPE = "type";
+    public final static String DIRECTORY_KEY = "directory_key";
 
 
 }

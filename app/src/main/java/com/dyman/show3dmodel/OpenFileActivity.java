@@ -126,6 +126,7 @@ public class OpenFileActivity extends BaseActivity implements View.OnClickListen
                 FolderBean bean = folderList.get(position);
                 Intent it = new Intent(OpenFileActivity.this, FileDirectoryActivity.class);
                 it.putExtra(IntentKey.TITLE, bean.getFolderName());
+                it.putExtra(IntentKey.KEY_TYPE, IntentKey.DIRECTORY_KEY);
                 it.putExtra(IntentKey.DIRECTORY_PATH, bean.getFolderPath());
                 startActivity(it);
             }
@@ -142,18 +143,30 @@ public class OpenFileActivity extends BaseActivity implements View.OnClickListen
                 ToastUtils.showShort(OpenFileActivity.this, "打开手机目录");
                 Intent it = new Intent(OpenFileActivity.this, FileDirectoryActivity.class);
                 it.putExtra(IntentKey.TITLE, "手机");
+                it.putExtra(IntentKey.KEY_TYPE, IntentKey.DIRECTORY_KEY);
                 it.putExtra(IntentKey.DIRECTORY_PATH, Environment.getExternalStorageDirectory().getAbsolutePath());
                 startActivity(it);
                 break;
             case R.id.stlFile_rl_activity_open_file:
                 ToastUtils.showShort(OpenFileActivity.this, "查找stl文件");
+                searchFileWithType("STL文件", "stl_key");
                 break;
             case R.id.objFile_rl_activity_open_file:
                 ToastUtils.showShort(OpenFileActivity.this, "查找obj文件");
+                searchFileWithType("STL文件", "obj_key");
                 break;
             case R.id.d3sFile_rl_activity_open_file:
                 ToastUtils.showShort(OpenFileActivity.this, "查找3ds文件");
+                searchFileWithType("STL文件", "3ds_key");
                 break;
         }
+    }
+
+
+    private void searchFileWithType(String title, String typeKey) {
+        Intent it = new Intent(OpenFileActivity.this, FileDirectoryActivity.class);
+        it.putExtra(IntentKey.TITLE, title);
+        it.putExtra(IntentKey.KEY_TYPE, typeKey);
+        startActivity(it);
     }
 }

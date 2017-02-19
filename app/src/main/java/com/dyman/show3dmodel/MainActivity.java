@@ -1,6 +1,8 @@
 package com.dyman.show3dmodel;
 
 import android.app.Dialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -48,6 +50,7 @@ public class MainActivity extends BaseActivity{
     DatabaseHelper databaseHelper;
     private boolean sureDelete;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +63,8 @@ public class MainActivity extends BaseActivity{
         initView();
         initDatas();
         checkAcceptFile();
+
+
     }
 
 

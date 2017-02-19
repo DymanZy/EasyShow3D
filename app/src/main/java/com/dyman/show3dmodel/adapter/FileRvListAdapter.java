@@ -1,5 +1,6 @@
 package com.dyman.show3dmodel.adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +23,11 @@ import java.util.List;
 public class FileRvListAdapter extends RecyclerView.Adapter<FileRvListAdapter.MyViewHolder> {
 
     private List<FileBean> mData;
+    private Context context;
 
-    public FileRvListAdapter(List<FileBean> data) {
+    public FileRvListAdapter(Context context, List<FileBean> data) {
         this.mData = data;
+        this.context = context;
     }
 
     @Override

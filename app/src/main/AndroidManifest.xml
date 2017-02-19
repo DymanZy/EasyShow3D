@@ -13,6 +13,9 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -22,20 +25,12 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-            <!-- 设置文件关联：obj/3ds/stl -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-
-                <data android:scheme="file"/>
-                <data android:mimeType="*/*"/>
-                <data android:host="*"/>
-                <data android:pathPattern=".*\\.obj"/>
-                <data android:pathPattern=".*\\.3ds"/>
-                <data android:pathPattern=".*\\.stl"/>
-            </intent-filter>
         </activity>
+
+
+
+
+
         <activity
             android:name=".OpenFileActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -54,6 +49,7 @@
         </activity>
         <activity android:name=".WelcomeActivity">
         </activity>
+
     </application>
 
 </manifest>

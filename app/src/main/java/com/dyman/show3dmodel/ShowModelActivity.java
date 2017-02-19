@@ -12,11 +12,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 
 import com.dyman.show3dmodel.bean.ModelObject;
 import com.dyman.show3dmodel.bean.ObjObject;
+import com.dyman.show3dmodel.bean.ObjProObject;
 import com.dyman.show3dmodel.bean.StlObject;
 import com.dyman.show3dmodel.config.MyConfig;
 import com.dyman.show3dmodel.utils.DialogUtils;
@@ -30,7 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class ShowModelActivity extends BaseActivity {
+public class ShowModelActivity extends BaseActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener{
 
     private static final String TAG = "ShowModelActivity";
     private FrameLayout showLayout;
@@ -39,6 +44,20 @@ public class ShowModelActivity extends BaseActivity {
     private ShowModelView sModelView;
     private String filePath;
     private ModelObject modelObject;
+
+    private TextView showLevelTv;
+    private SeekBar changeModelLevelSb;
+    private Button leftBtn;
+    private Button rightBtn;
+    private ImageView xMode;
+    private ImageView zMode;
+    private ImageView zoomMode;
+
+    private final static int CHANGE_X_MODE = 300;     // 改变x轴角度
+    private final static int CHANGE_Z_MODE = 301;     // 改变z轴角度
+    private final static int CHANGE_ZOOM_MODE = 302;  // 改变打印大小
+    private int CHANGE_MODE = CHANGE_ZOOM_MODE;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +69,7 @@ public class ShowModelActivity extends BaseActivity {
         initView();
         isHaveFile(filePath);
     }
+
 
     /**
      *  初始化Toolbar
@@ -78,9 +98,27 @@ public class ShowModelActivity extends BaseActivity {
         });
     }
 
+
     private void initView() {
         showLayout = (FrameLayout) findViewById(R.id.showLayout_fl_activity_show_model);
+        changeModelLevelSb = (SeekBar) findViewById(R.id.changeModelLevel_seekBar_activity_show_model);
+        changeModelLevelSb.setOnSeekBarChangeListener(this);
+
+        showLevelTv = (TextView) findViewById(R.id.level_tv_activity_show_model);
+        leftBtn = (Button) findViewById(R.id.left_btn_activity_show_model);
+        rightBtn = (Button) findViewById(R.id.right_btn_activity_show_model);
+        xMode = (ImageView) findViewById(R.id.xMode_iv_activity_show_model);
+        zMode = (ImageView) findViewById(R.id.zMode_iv_activity_show_model);
+        zoomMode = (ImageView) findViewById(R.id.zoomMode_iv_activity_show_model);
+        leftBtn.setOnClickListener(this);
+        rightBtn.setOnClickListener(this);
+        xMode.setOnClickListener(this);
+        zMode.setOnClickListener(this);
+        zoomMode.setOnClickListener(this);
+
+
     }
+
 
     /**
      *  检查模型是否存在，存在则进行解析
@@ -96,11 +134,13 @@ public class ShowModelActivity extends BaseActivity {
         }
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_show_model, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -129,6 +169,7 @@ public class ShowModelActivity extends BaseActivity {
         return true;
     }
 
+
     /**
      *  获取文件字节
      * @param context
@@ -145,7 +186,122 @@ public class ShowModelActivity extends BaseActivity {
     }
 
 
+    // 只改x和z轴转向
+    @Override
+    public void onClick(View v) {
+        int progress = 0;
+        switch (v.getId()) {
+            case R.id.xMode_iv_activity_show_model:
+                CHANGE_MODE = CHANGE_X_MODE;
+                progress = (int)modelObject.xRotateAngle + 180;
+                changeModelLevelSb.setMax(360);
+                changeModelLevelSb.setProgress(progress);
+                showLevelTv.setText(String.valueOf(modelObject.xRotateAngle)+"°");
+                break;
+
+            case R.id.zoomMode_iv_activity_show_model:
+                progress = (int)(modelObject.printScale*10);
+                CHANGE_MODE = CHANGE_ZOOM_MODE;
+                changeModelLevelSb.setMax(20);
+                changeModelLevelSb.setProgress(progress);
+                showLevelTv.setText(String.valueOf(modelObject.printScale)+"倍");
+                break;
+
+            case R.id.zMode_iv_activity_show_model:
+                progress = (int)modelObject.zRotateAngle + 180;
+                CHANGE_MODE = CHANGE_Z_MODE;
+                changeModelLevelSb.setMax(360);
+                changeModelLevelSb.setProgress(progress);
+                showLevelTv.setText(String.valueOf(modelObject.zRotateAngle)+"°");
+                break;
+
+            case R.id.right_btn_activity_show_model:
+                clickAdjustBtn(1);
+                break;
+
+            case R.id.left_btn_activity_show_model:
+                clickAdjustBtn(0);
+                break;
+        }
+    }
+
+
+
+    private void clickAdjustBtn (int side) {
+        float range;
+        if (CHANGE_MODE == CHANGE_ZOOM_MODE) {
+            range = 0.1f;
+        } else {
+            range = 90f;
+        }
+
+        if (side == 0) {
+            range = -range;
+        }
+
+        switch (CHANGE_MODE) {
+            case CHANGE_X_MODE:
+                modelObject.xRotateAngle += range;
+                if (modelObject.xRotateAngle < -180f) modelObject.xRotateAngle = -180f;
+                if (modelObject.xRotateAngle > 180f) modelObject.xRotateAngle = 180f;
+                changeModelLevelSb.setProgress((int) modelObject.xRotateAngle + 180);
+                showLevelTv.setText(String.valueOf(modelObject.xRotateAngle)+"°");
+                break;
+            case CHANGE_ZOOM_MODE:
+                modelObject.printScale += range;
+                if (modelObject.printScale < 0.1f) modelObject.printScale = 0.1f;
+                if (modelObject.printScale > 2.0f) modelObject.printScale = 2.0f;
+                changeModelLevelSb.setProgress((int) (modelObject.printScale*10));
+                showLevelTv.setText(String.valueOf(modelObject.printScale)+"倍");
+                break;
+            case CHANGE_Z_MODE:
+                modelObject.zRotateAngle += range;
+                if (modelObject.zRotateAngle < -180f) modelObject.zRotateAngle = -180f;
+                if (modelObject.zRotateAngle > 180f) modelObject.zRotateAngle = 180f;
+                changeModelLevelSb.setProgress((int) modelObject.zRotateAngle + 180);
+                showLevelTv.setText(String.valueOf(modelObject.zRotateAngle)+"°");
+                break;
+        }
+
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        switch (CHANGE_MODE) {
+            case CHANGE_X_MODE:
+                Log.i(TAG, "onProgressChanged: ----x---- progress = "+progress);
+                modelObject.xRotateAngle = (float) (progress - 180);
+                showLevelTv.setText(String.valueOf(modelObject.xRotateAngle)+"°");
+                break;
+            case CHANGE_ZOOM_MODE:
+                Log.i(TAG, "onProgressChanged: ----x---- progress = "+progress);
+                if (modelObject != null) {
+                    modelObject.printScale = (float)progress / 10;
+                    showLevelTv.setText(String.valueOf(modelObject.printScale)+"倍");
+                }
+                break;
+            case CHANGE_Z_MODE:
+                Log.i(TAG, "onProgressChanged: ----x---- progress = "+progress);
+                modelObject.zRotateAngle = (float) (progress - 180);
+                showLevelTv.setText(String.valueOf(modelObject.zRotateAngle)+"°");
+                break;
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) { // do nothing
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) { // do nothing
+    }
+
+
+    /**
+     *  3D文件解析结果的回调
+     */
     class ReadFinish implements ModelObject.IFinishCallBack{
+
         @Override
         public void readModelFinish() {
             if (modelObject != null) {
@@ -154,6 +310,10 @@ public class ShowModelActivity extends BaseActivity {
                     showLayout.addView(sModelView);
                     sModelView.requestFocus();
                     sModelView.setFocusableInTouchMode(true);
+                    Log.e(TAG, "readModelFinish: -----------------------------------------------");
+                    Log.e(TAG, "xRotateAngle = "+modelObject.xRotateAngle);
+                    Log.e(TAG, "zRotateAngle = "+modelObject.zRotateAngle);
+                    Log.e(TAG, "printScale = "+modelObject.printScale);
                 }
             }
         }

@@ -7,10 +7,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.dyman.show3dmodel.manager.SharePreferenceManager;
-import com.dyman.show3dmodel.manager.SystemBarTintManager;
-import com.dyman.show3dmodel.thread.AnalysisThreadHelper;
-import com.dyman.show3dmodel.thread.IAnalysisFinishCallback;
-import com.dyman.show3dmodel.thread.VerticesThread;
 import com.dyman.show3dmodel.utils.Normal;
 
 import java.nio.ByteBuffer;
@@ -22,12 +18,12 @@ import java.util.HashSet;
 /**
  * Created by dyman on 16/7/25.
  */
-public class ObjObject extends ModelObject{
+public class ObjProObject extends ModelObject{
 
     private static final String TAG = "ObjObject";
 
     private byte[] objByte = null;
-    public IFinishCallBack finishCallBack;
+    IFinishCallBack finishCallBack;
 
     //原始顶点坐标列表--直接从obj文件中加载
     ArrayList<Float> alv=new ArrayList<Float>();
@@ -38,18 +34,14 @@ public class ObjObject extends ModelObject{
     //平均前各个索引对应的点的法向量集合Map
     //此HashMap的key为点的索引， value为点所在的各个面的法向量的集合
     HashMap<Integer,HashSet<Normal>> hmn=new HashMap<Integer,HashSet<Normal>>();
-    ArrayList<Float> verticesList = new ArrayList<>();
     float[] vertices;
     float[] normals;
-    /** 三角形面数 */
-    int faceNum = 0;
 
     AsyncTask<byte[], Integer, float[]> task;
     ProgressDialog progressDialog;
 
 
-
-    public ObjObject(byte[] objByte, Context context, int drawMode, IFinishCallBack finishCallBack) {
+    public ObjProObject(byte[] objByte, Context context, int drawMode, IFinishCallBack finishCallBack) {
         this.modelType = "obj";
 
         this.objByte = objByte;
@@ -57,7 +49,6 @@ public class ObjObject extends ModelObject{
         this.finishCallBack = finishCallBack;
         sp = new SharePreferenceManager(context);
         processOBJ(objByte, context);
-
     }
 
 
@@ -83,6 +74,7 @@ public class ObjObject extends ModelObject{
         //顶点坐标数据的初始化================end============================
 
 
+
         //顶点法向量数据的初始化================begin============================
         ByteBuffer cbb = ByteBuffer.allocateDirect(normals.length*4);
         cbb.order(ByteOrder.nativeOrder());//设置字节顺序
@@ -106,7 +98,6 @@ public class ObjObject extends ModelObject{
 
         return new float[]{A,B,C};
     }
-
 
     /**
      *  向量规格化
@@ -154,6 +145,7 @@ public class ObjObject extends ModelObject{
 
                 for (int i = 0, len = totalLines; i < len; i++){
                     String line = objLines[i];
+                    line = line.trim();
                     String[] tempsa = line.split("[ ]+");
                     if (tempsa[0].trim().equals("v")){  //此为顶点坐标
                         alv.add(Float.parseFloat(tempsa[1]));
@@ -162,68 +154,22 @@ public class ObjObject extends ModelObject{
 
                     } else if(tempsa[0].trim().equals("f")){    //此为三角形面
                         int[] index = new int[3];
-                        //计算第0个顶点的索引，并获取此顶点的XYZ三个坐标
-                        index[0]=Integer.parseInt(tempsa[1].split("/")[0])-1;
-                        float x0=alv.get(3*index[0]);
-                        float y0=alv.get(3*index[0]+1);
-                        float z0=alv.get(3*index[0]+2);
-                        alvResult.add(x0);
-                        alvResult.add(y0);
-                        alvResult.add(z0);
-                        adjustMaxMin(x0, y0, z0);
-
-                        //计算第1个顶点的索引，并获取此顶点的XYZ三个坐标
-                        index[1]=Integer.parseInt(tempsa[2].split("/")[0])-1;
-                        float x1=alv.get(3*index[1]);
-                        float y1=alv.get(3*index[1]+1);
-                        float z1=alv.get(3*index[1]+2);
-                        alvResult.add(x1);
-                        alvResult.add(y1);
-                        alvResult.add(z1);
-                        adjustMaxMin(x1, y1, z1);
-
-                        //计算第2个顶点的索引，并获取此顶点的XYZ三个坐标
-                        index[2]=Integer.parseInt(tempsa[3].split("/")[0])-1;
-                        float x2=alv.get(3*index[2]);
-                        float y2=alv.get(3*index[2]+1);
-                        float z2=alv.get(3*index[2]+2);
-                        alvResult.add(x2);
-                        alvResult.add(y2);
-                        alvResult.add(z2);
-                        adjustMaxMin(x2, y2, z2);
-
-                        //记录此面的顶点索引
-                        alFaceIndex.add(index[0]);
-                        alFaceIndex.add(index[1]);
-                        alFaceIndex.add(index[2]);
-
-                        //通过三角形面两个边向量0-1，0-2求叉积得到此面的法向量
-                        //求0号点到1号点的向量
-                        float vxa=x1-x0;
-                        float vya=y1-y0;
-                        float vza=z1-z0;
-                        //求0号点到2号点的向量
-                        float vxb=x2-x0;
-                        float vyb=y2-y0;
-                        float vzb=z2-z0;
-                        //通过求两个向量的叉积计算法向量
-                        float[] vNormal=vectorNormal(getCrossProduct(
-                                vxa,vya,vza,vxb,vyb,vzb
-                        ));
-
-                        for(int tempInxex:index) {//记录每个索引点的法向量到平均前各个索引对应的点的法向量集合组成的Map中
-                            //获取当前索引对应点的法向量集合
-                            HashSet<Normal> hsn=hmn.get(tempInxex);
-                            if(hsn==null) {//若集合不存在则创建
-                                hsn=new HashSet<Normal>();
-                            }
-                            //将此点的法向量添加到集合中
-                            //由于Normal类重写了equals方法，因此同样的法向量不会重复出现在此点
-                            //对应的法向量集合中
-                            hsn.add(new Normal(vNormal[0],vNormal[1],vNormal[2]));
-                            //将集合放进HsahMap中
-                            hmn.put(tempInxex, hsn);
+                        if (tempsa.length == 5) {
+                            index[0]=Integer.parseInt(tempsa[1].split("/")[0])-1;
+                            index[1]=Integer.parseInt(tempsa[2].split("/")[0])-1;
+                            index[2]=Integer.parseInt(tempsa[3].split("/")[0])-1;
+                            dealFaceTri(index);
+                            index[0]=Integer.parseInt(tempsa[2].split("/")[0])-1;
+                            index[1]=Integer.parseInt(tempsa[3].split("/")[0])-1;
+                            index[2]=Integer.parseInt(tempsa[4].split("/")[0])-1;
+                            dealFaceTri(index);
+                        } else {
+                            index[0]=Integer.parseInt(tempsa[1].split("/")[0])-1;
+                            index[1]=Integer.parseInt(tempsa[2].split("/")[0])-1;
+                            index[2]=Integer.parseInt(tempsa[3].split("/")[0])-1;
+                            dealFaceTri(index);
                         }
+
                     }
 
                     if (i % (totalLines / 100) == 0){
@@ -234,6 +180,70 @@ public class ObjObject extends ModelObject{
                 return new float[0];
             }
 
+
+            private void dealFaceTri(int[] index) {
+                //计算第0个顶点的索引，并获取此顶点的XYZ三个坐标
+                float x0=alv.get(3*index[0]);
+                float y0=alv.get(3*index[0]+1);
+                float z0=alv.get(3*index[0]+2);
+                alvResult.add(x0);
+                alvResult.add(y0);
+                alvResult.add(z0);
+                adjustMaxMin(x0, y0, z0);
+
+                //计算第1个顶点的索引，并获取此顶点的XYZ三个坐标
+                float x1=alv.get(3*index[1]);
+                float y1=alv.get(3*index[1]+1);
+                float z1=alv.get(3*index[1]+2);
+                alvResult.add(x1);
+                alvResult.add(y1);
+                alvResult.add(z1);
+                adjustMaxMin(x1, y1, z1);
+
+                //计算第2个顶点的索引，并获取此顶点的XYZ三个坐标
+                float x2=alv.get(3*index[2]);
+                float y2=alv.get(3*index[2]+1);
+                float z2=alv.get(3*index[2]+2);
+                alvResult.add(x2);
+                alvResult.add(y2);
+                alvResult.add(z2);
+                adjustMaxMin(x2, y2, z2);
+
+                //记录此面的顶点索引
+                alFaceIndex.add(index[0]);
+                alFaceIndex.add(index[1]);
+                alFaceIndex.add(index[2]);
+
+                //通过三角形面两个边向量0-1，0-2求叉积得到此面的法向量
+                //求0号点到1号点的向量
+                float vxa=x1-x0;
+                float vya=y1-y0;
+                float vza=z1-z0;
+                //求0号点到2号点的向量
+                float vxb=x2-x0;
+                float vyb=y2-y0;
+                float vzb=z2-z0;
+                //通过求两个向量的叉积计算法向量
+                float[] vNormal=vectorNormal(getCrossProduct(
+                        vxa,vya,vza,vxb,vyb,vzb
+                ));
+
+                for(int tempInxex:index) {//记录每个索引点的法向量到平均前各个索引对应的点的法向量集合组成的Map中
+                    //获取当前索引对应点的法向量集合
+                    HashSet<Normal> hsn=hmn.get(tempInxex);
+                    if(hsn==null) {//若集合不存在则创建
+                        hsn=new HashSet<Normal>();
+                    }
+                    //将此点的法向量添加到集合中
+                    //由于Normal类重写了equals方法，因此同样的法向量不会重复出现在此点
+                    //对应的法向量集合中
+                    hsn.add(new Normal(vNormal[0],vNormal[1],vNormal[2]));
+                    //将集合放进HsahMap中
+                    hmn.put(tempInxex, hsn);
+                }
+            }
+
+
             @Override
             protected void onProgressUpdate(Integer... values) {
                 progressDialog.setProgress(values[0]);
@@ -241,6 +251,8 @@ public class ObjObject extends ModelObject{
 
             @Override
             protected void onPostExecute(float[] floats) {
+
+
                 //生成顶点数组
                 int size=alvResult.size();
                 vertices=new float[size];
@@ -267,11 +279,11 @@ public class ObjObject extends ModelObject{
                 finishCallBack.readModelFinish();
                 progressDialog.dismiss();
 
-                Log.i(TAG, "--------------------------vertices.size = " + vertices.length);
-                Log.i(TAG, "--------------------------normals.size = " + normals.length);
-                Log.i(TAG, "--------------------------length_x = " + (maxX-minX));
-                Log.i(TAG, "--------------------------length_y = " + (maxY-minY));
-                Log.i(TAG, "--------------------------length_z = " + (maxZ-minZ));
+                Log.i(TAG, "------------------------------vertices.size = " + vertices.length);
+                Log.i(TAG, "------------------------------normals.size = " + normals.length);
+                Log.i(TAG, "------------------------------length_x = " + (maxX-minX));
+                Log.i(TAG, "------------------------------length_y = " + (maxY-minY));
+                Log.i(TAG, "------------------------------length_z = " + (maxZ-minZ));
             }
         };
 
@@ -280,8 +292,8 @@ public class ObjObject extends ModelObject{
         } catch (Exception e){
             return false;
         }
-
         return true;
     }
+
 
 }

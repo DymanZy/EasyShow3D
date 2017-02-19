@@ -13,9 +13,11 @@ import com.dyman.show3dmodel.bean.ModelObject;
 public class ShowModelView extends ModelView{
 
     private static final String TAG = "ShowModelView";
+    private ModelObject modelObject;
 
     public ShowModelView(Context context, ModelObject modelObject) {
         super(context, modelObject);
+        this.modelObject = modelObject;
     }
 
     /**
@@ -38,7 +40,7 @@ public class ShowModelView extends ModelView{
 
             case MotionEvent.ACTION_POINTER_DOWN:
                 if (e.getPointerCount() >= 2){
-                    Log.e(TAG, "onTouchEvent: 双指放下");
+                    Log.e(TAG, "onTouchEvent: ------------------------------双指放下");
                     pinchStartDistance = getPinchDistance(e);
                     if (pinchStartDistance >= 50f){
                         touchMode = TOUCH_ZOOM;
@@ -48,11 +50,11 @@ public class ShowModelView extends ModelView{
 
             case MotionEvent.ACTION_MOVE:
                 if (touchMode == TOUCH_ZOOM && pinchStartDistance > 0){
-                    Log.e(TAG, "onTouchEvent: 缩放");
+                    Log.e(TAG, "onTouchEvent: ------------------------------缩放");
                     changeScale = getPinchDistance(e) / pinchStartDistance;
-                    currScale = changeScale * previousScale;
+                    wholeScale = changeScale * previousScale;
                 } else if(touchMode == TOUCH_DRAG){
-                    Log.e(TAG, "onTouchEvent: 旋转");
+                    Log.e(TAG, "onTouchEvent: ------------------------------旋转");
                     float dy = y - mPreviousY;//计算触控笔Y位移
                     float dx = x - mPreviousX;//计算触控笔X位移
                     mRenderer.yAngle += dx * TOUCH_SCALE_FACTOR;//设置沿x轴旋转角度
@@ -67,7 +69,7 @@ public class ShowModelView extends ModelView{
                 Log.e(TAG, "onTouchEvent: 手指拿起");
                 if (touchMode == TOUCH_ZOOM){
                     touchMode = TOUCH_NONE;
-                    previousScale = currScale;//记录缩放倍数
+                    previousScale = wholeScale;//记录缩放倍数
                 }
                 break;
 
@@ -95,6 +97,5 @@ public class ShowModelView extends ModelView{
         }
         return (float) Math.sqrt(x * x + y * y);
     }
-
 
 }
