@@ -7,41 +7,9 @@
 
 ## Screenshots
 
-<a href="art/00.jpeg">
+<a href="art/00.jpeg"><img src="art/00.jpeg" width="30%"/></a> <a href="art/01.jpeg"><img src="art/01.jpeg" width="30%"/></a> <a href="art/02.jpeg"><img src="art/02.jpeg" width="30%"/></a>
 
-​	<img src="art/00.jpeg" width="30%"/>
-
-</a>
-
-<a href="art/01.jpeg">
-
-​	<img src="art/01.jpeg" width="30%"/>
-
-</a>
-
-<a href="art/02.jpeg">
-
-​	<img src="art/02.jpeg" width="30%"/>
-
-</a>
-
-<a href="art/03.jpeg">
-
-​	<img src="art/03.jpeg" width="30%"/>
-
-</a>
-
-<a href="art/04.jpeg">
-
-​	<img src="art/04.jpeg" width="30%"/>
-
-</a>
-
-<a href="art/05.jpeg">
-
-​	<img src="art/05.jpeg" width="30%"/>
-
-</a>
+<a href="art/03.jpeg"><img src="art/03.jpeg" width="30%"/></a> <a href="art/04.jpeg"><img src="art/04.jpeg" width="30%"/></a> <a href="art/05.jpeg"><img src="art/05.jpeg" width="30%"/></a>
 
 
 
