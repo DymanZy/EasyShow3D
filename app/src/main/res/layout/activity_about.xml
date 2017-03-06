@@ -32,11 +32,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="15dp"
-            android:src="@mipmap/ic_logo"/>
+            android:src="@mipmap/ic_launcher"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Version 0.9.0.160822"/>
+            android:text="Version 1.0.2.170221"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -63,5 +63,10 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:text="@string/author_email"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="@string/author_gitHub"/>
     </LinearLayout>
 </LinearLayout>

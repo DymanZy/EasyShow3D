@@ -127,17 +127,7 @@ public class ModelView extends GLSurfaceView {
             // 清除深度缓冲与颜色缓冲
             GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
 
-            // 画底座网格和打印机内框范围
-            MatrixState.pushMatrix();
-            MatrixState.translate(0, -2f, -25f);
-            MatrixState.rotate(yAngle, 0, 1, 0);
-            MatrixState.rotate(zAngle, 1, 0, 0);
-            MatrixState.scale(wholeScale, wholeScale, wholeScale);
-            baseBuilder.setHeight(modelObject.printScale*(modelObject.maxY - modelObject.minY)/2);
-            baseBuilder.drawGrids();
-            baseBuilder.drawBorder();
-            baseBuilder.drawOrigin();
-            MatrixState.popMatrix();
+//             
 
 
             // 画3D模型

@@ -232,10 +232,7 @@ public class MainActivity extends BaseActivity{
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-
-            return true;
-        } else if (id == R.id.action_about){
+        if (id == R.id.action_about){
             Intent it_about = new Intent(MainActivity.this, AboutActivity.class);
             startActivity(it_about);
 
