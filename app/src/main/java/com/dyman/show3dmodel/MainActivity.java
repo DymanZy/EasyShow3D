@@ -1,8 +1,5 @@
 package com.dyman.show3dmodel;
 
-import android.app.Dialog;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,8 +7,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
@@ -112,7 +107,7 @@ public class MainActivity extends BaseActivity{
                         shareIntent.setAction(Intent.ACTION_SEND);
                         shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
                         shareIntent.setType("text/plain");
-                        startActivity(Intent.createChooser(shareIntent, "分享到"));
+                        startActivity(Intent.createChooser(shareIntent, getString(R.string.tip_share_to)));
 
                         break;
                     case 1://delete
@@ -121,7 +116,8 @@ public class MainActivity extends BaseActivity{
                         final int fileIndex = fileList.indexOf(fileBean);
                         fileList.remove(fileIndex);
                         adapter.notifyDataSetChanged();
-                        SnackBarUtils.makeLong(swipeLv, "已删除该记录").show("撤销", new View.OnClickListener() {
+                        SnackBarUtils.makeLong(swipeLv, getString(R.string.tip_already_delete_record))
+                                .show(getString(R.string.tip_cancel), new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Log.i(TAG, "onClick: -------------------------撤销删除");
@@ -134,7 +130,7 @@ public class MainActivity extends BaseActivity{
                             @Override
                             public void run() {
                                 if (sureDelete) {
-                                    databaseHelper.delect(fileBean.getId());
+                                    databaseHelper.delete(fileBean.getId());
                                     Log.i(TAG, "onClick: -------------------------确定删除");
                                 }
                             }
@@ -154,10 +150,11 @@ public class MainActivity extends BaseActivity{
                 if (file.canRead()) {
                     open3DFile(file);
                 } else {
-                    DialogUtils.showAlerDialog(MainActivity.this, "文件无效，是否删除？", new DialogInterface.OnClickListener() {
+                    DialogUtils.showAlerDialog(MainActivity.this, getString(R.string.tip_is_delete_invalid_file), new DialogInterface.OnClickListener
+                            () {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            databaseHelper.delect(fileBean.getId());
+                            databaseHelper.delete(fileBean.getId());
                             dialogInterface.dismiss();
                         }
                     });
@@ -204,7 +201,7 @@ public class MainActivity extends BaseActivity{
 
         Log.e(TAG, "openFile: 3D文件的大小= "+file.length()/1024/1024+"M");
         if (file.length()>10*1024*1024) {
-            ToastUtils.showLong(MainActivity.this, "文件大于10M可能会解析失败");
+            ToastUtils.showLong(MainActivity.this, getString(R.string.tip_file_maybe_analysis_fail));
         }
         Intent it = new Intent(MainActivity.this, ShowModelActivity.class);
         it.putExtra("filePath", file.getAbsolutePath());

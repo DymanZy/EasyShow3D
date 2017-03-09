@@ -129,7 +129,7 @@ public class ShowModelActivity extends BaseActivity implements View.OnClickListe
             File file = new File(filePath);
             openModelFile(file);
         } else {
-            ToastUtils.showShort(ShowModelActivity.this, "文件不存在");
+            ToastUtils.showShort(ShowModelActivity.this, getString(R.string.text_file_not_exist));
             finish();
         }
     }
@@ -146,13 +146,11 @@ public class ShowModelActivity extends BaseActivity implements View.OnClickListe
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_show_setting:
-                ToastUtils.showShort(ShowModelActivity.this, "点击了设置显示");
                 Dialog showDialog = DialogUtils.showSettingDialog(ShowModelActivity.this);
                 showDialog.show();
                 break;
 
             case R.id.menu_renderer_setting:
-                ToastUtils.showShort(ShowModelActivity.this, "点击了设置渲染");
                 Dialog renderDialog = DialogUtils.renderSettingDialog(ShowModelActivity.this);
                 renderDialog.show();
                 break;
@@ -163,7 +161,7 @@ public class ShowModelActivity extends BaseActivity implements View.OnClickListe
                 shareIntent.setAction(Intent.ACTION_SEND);
                 shareIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
                 shareIntent.setType("text/plain");
-                startActivity(Intent.createChooser(shareIntent, "分享到"));
+                startActivity(Intent.createChooser(shareIntent, getString(R.string.tip_share_to)));
                 break;
         }
         return true;

@@ -84,7 +84,7 @@ public class OpenFileActivity extends BaseActivity implements View.OnClickListen
         if (!folderList.isEmpty()) { folderList.clear(); }
 
         FolderBean folderBean = new FolderBean();
-        folderBean.setFolderName("QQ");
+        folderBean.setFolderName(getString(R.string.text_qq));
         folderBean.setFolderPath(rootPath+File.separator+"tencent"+File.separator+"QQfile_recv");
         if (new File(folderBean.getFolderPath()).canRead()) {
             folderList.add(folderBean);
@@ -93,7 +93,7 @@ public class OpenFileActivity extends BaseActivity implements View.OnClickListen
         }
 
         folderBean = new FolderBean();
-        folderBean.setFolderName("Download");
+        folderBean.setFolderName(getString(R.string.text_download));
         folderBean.setFolderPath(rootPath+File.separator+"Download");
         if (new File(folderBean.getFolderPath()).canRead()) {
             folderList.add(folderBean);
@@ -102,7 +102,7 @@ public class OpenFileActivity extends BaseActivity implements View.OnClickListen
         }
 
         folderBean = new FolderBean();
-        folderBean.setFolderName("我的文档");
+        folderBean.setFolderName(getString(R.string.text_document));
         folderBean.setFolderPath(rootPath+File.separator+"documents");
         if (new File(folderBean.getFolderPath()).canRead()) {
             folderList.add(folderBean);
@@ -111,7 +111,7 @@ public class OpenFileActivity extends BaseActivity implements View.OnClickListen
         }
 
         folderBean = new FolderBean();
-        folderBean.setFolderName("微信");
+        folderBean.setFolderName(getString(R.string.text_weixin));
         folderBean.setFolderPath(rootPath+File.separator+"tencent"+File.separator+"MicroMsg"+File.separator+"Download");
         if (new File(folderBean.getFolderPath()).canRead()) {
             folderList.add(folderBean);
@@ -140,7 +140,7 @@ public class OpenFileActivity extends BaseActivity implements View.OnClickListen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.openRootDir_ll_activity_open_file:
-                ToastUtils.showShort(OpenFileActivity.this, "打开手机目录");
+                ToastUtils.showShort(OpenFileActivity.this, getString(R.string.text_open_root_dir));
                 Intent it = new Intent(OpenFileActivity.this, FileDirectoryActivity.class);
                 it.putExtra(IntentKey.TITLE, "手机");
                 it.putExtra(IntentKey.KEY_TYPE, IntentKey.DIRECTORY_KEY);
@@ -148,15 +148,15 @@ public class OpenFileActivity extends BaseActivity implements View.OnClickListen
                 startActivity(it);
                 break;
             case R.id.stlFile_rl_activity_open_file:
-                ToastUtils.showShort(OpenFileActivity.this, "查找stl文件");
+                ToastUtils.showShort(OpenFileActivity.this, getString(R.string.text_search_stl));
                 searchFileWithType("STL文件", "stl_key");
                 break;
             case R.id.objFile_rl_activity_open_file:
-                ToastUtils.showShort(OpenFileActivity.this, "查找obj文件");
+                ToastUtils.showShort(OpenFileActivity.this, getString(R.string.text_search_obj));
                 searchFileWithType("STL文件", "obj_key");
                 break;
             case R.id.d3sFile_rl_activity_open_file:
-                ToastUtils.showShort(OpenFileActivity.this, "查找3ds文件");
+                ToastUtils.showShort(OpenFileActivity.this, getString(R.string.text_search_ds));
                 searchFileWithType("STL文件", "3ds_key");
                 break;
         }

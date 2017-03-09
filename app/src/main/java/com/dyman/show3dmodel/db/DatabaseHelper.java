@@ -120,7 +120,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public void delect(String fileID) {
+    public void delete(String fileID) {
         DatabaseHelper databaseHelper = new DatabaseHelper(context);
         SQLiteDatabase sqLiteDatabase = databaseHelper.getWritableDatabase();
         sqLiteDatabase.delete(TABLE_NAME, FileBean.ID+"=?", new String[]{fileID});

@@ -74,7 +74,7 @@ public class FileDirectoryActivity extends BaseActivity implements OnAdapterItem
 
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_activity_file_directory);
-        toolbar.setTitle(mTitle.equals("") ? "常用" : mTitle);
+        toolbar.setTitle(mTitle.equals("") ? getString(R.string.text_command) : mTitle);
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,7 +209,7 @@ public class FileDirectoryActivity extends BaseActivity implements OnAdapterItem
 
         Log.e(TAG, "openFile: 3D文件的大小= "+file.length()/1024/1024+"M");
         if (file.length()>10*1024*1024) {
-            ToastUtils.showLong(FileDirectoryActivity.this, "文件大于10M可能会解析失败");
+            ToastUtils.showLong(FileDirectoryActivity.this, getString(R.string.tip_file_maybe_analysis_fail));
         }
         Intent it = new Intent(FileDirectoryActivity.this, ShowModelActivity.class);
         it.putExtra("filePath", file.getAbsolutePath());

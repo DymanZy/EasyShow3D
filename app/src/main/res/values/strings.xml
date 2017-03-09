@@ -29,6 +29,22 @@
     <string name="text_dir_name">目录名</string>
     <string name="text_file_dir_name">文件夹名称</string>
     <string name="text_file_name">文件名</string>
+    <string name="text_qq">QQ</string>
+    <string name="text_download">Download</string>
+    <string name="text_document">我的文档</string>
+    <string name="text_weixin">微信</string>
+    <string name="text_open_root_dir">打开手机目录</string>
+    <string name="text_search_stl">查找stl文件</string>
+    <string name="text_search_obj">查找obj文件</string>
+    <string name="text_search_ds">查找3ds文件</string>
+    <string name="text_file_not_exist">文件不存在</string>
+
+    <string name="tip_file_maybe_analysis_fail">文件大于10M可能会解析失败</string>
+    <string name="tip_share_to">分享到</string>
+    <string name="tip_already_delete_record">已删除该记录</string>
+    <string name="tip_is_delete_invalid_file">文件无效，是否删除？</string>
+    <string name="tip_cancel">撤销</string>
+
 
 
     <string name="app_description">这是一个浏览3D文件的app, 目前支持的文件格式有比较常用的STL、OBJ和3DS格式，暂不支持dwg、stp、igs等格式，将继续完善。</string>
