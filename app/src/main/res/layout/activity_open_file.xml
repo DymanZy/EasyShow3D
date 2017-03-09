@@ -54,7 +54,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:text="STL"
+                        android:text="@string/text_stl"
                         android:layout_marginTop="50dp"
                         android:padding="5dp"/>
                 </RelativeLayout>
@@ -79,7 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:text="OBJ"
+                        android:text="@string/text_obj"
                         android:layout_marginTop="50dp"
                         android:padding="5dp"/>
                 </RelativeLayout>
@@ -104,7 +104,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:text="3DS"
+                        android:text="@string/text_ds"
                         android:layout_marginTop="50dp"
                         android:padding="5dp"/>
                 </RelativeLayout>
@@ -119,7 +119,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="位置"
+                    android:text="@string/text_location"
                     android:textSize="12sp"
                     android:padding="10dp"/>
             </RelativeLayout>
@@ -142,7 +142,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/fab_margin"
-                        android:text="手机"/>
+                        android:text="@string/text_phone"/>
                 </LinearLayout>
             </LinearLayout>
             <TextView
@@ -156,7 +156,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="常用"
+                    android:text="@string/text_command"
                     android:textSize="12sp"
                     android:padding="10dp"/>
             </RelativeLayout>

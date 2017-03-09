@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="15dp"
-        android:text="渲染设置"
+        android:text="@string/text_render_setting"
         android:textSize="16sp"
         android:textColor="@color/white"
         android:background="@drawable/bg_round_up_green_dark"/>
@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="15dp"
-            android:text="线渲染"
+            android:text="@string/text_render_line"
             android:textColor="@color/blank"
             android:clickable="true"
             android:background="?android:selectableItemBackground"/>
@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="15dp"
-            android:text="面渲染"
+            android:text="@string/text_render_face"
             android:textColor="@color/blank"
             android:clickable="true"
             android:background="?android:selectableItemBackground"/>

@@ -13,6 +13,23 @@
     <string name="parent_directory">父目录</string>
     <string name="choose_stl_file">选择STL文件</string>
 
+    <string name="text_stl">STL</string>
+    <string name="text_obj">OBJ</string>
+    <string name="text_ds">3DS</string>
+    <string name="text_location">位置</string>
+    <string name="text_phone">手机</string>
+    <string name="text_command">常用</string>
+    <string name="text_open">打开</string>
+    <string name="text_render_setting">渲染设置</string>
+    <string name="text_render_line">线渲染</string>
+    <string name="text_render_face">面渲染</string>
+    <string name="text_show_setting">显示设置</string>
+    <string name="text_show_coordinate">显示坐标</string>
+    <string name="text_show_grid">显示网格</string>
+    <string name="text_dir_name">目录名</string>
+    <string name="text_file_dir_name">文件夹名称</string>
+    <string name="text_file_name">文件名</string>
+
 
     <string name="app_description">这是一个浏览3D文件的app, 目前支持的文件格式有比较常用的STL、OBJ和3DS格式，暂不支持dwg、stp、igs等格式，将继续完善。</string>
     <string name="author_email">Email： dyman_zy@163.com</string>
