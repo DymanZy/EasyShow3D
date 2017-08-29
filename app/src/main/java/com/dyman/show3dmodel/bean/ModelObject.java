@@ -61,6 +61,8 @@ public class ModelObject {
     FloatBuffer   mNormalBuffer;//顶点法向量数据缓冲
     int vCount=0;
 
+    public long spendTime;
+
 
     /**
      *  加载进度框

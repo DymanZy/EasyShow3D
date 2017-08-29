@@ -4,6 +4,7 @@
 
     <permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <permission android:name="android.permission.WRITE_MEDIA_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
@@ -13,11 +14,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
-
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -26,28 +24,25 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
-
-
-
-
         <activity
-            android:name=".OpenFileActivity"
+            android:name=".ui.OpenFileActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".FileDirectoryActivity"
+            android:name=".ui.FileDirectoryActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".ShowModelActivity"
+            android:name=".ui.ShowModelActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".AboutActivity"
+            android:name=".ui.AboutActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
+        <activity android:name=".ui.TestActivity"
+                  android:theme="@style/AppTheme.NoActionBar" >
+        </activity>
     </application>
 
 </manifest>

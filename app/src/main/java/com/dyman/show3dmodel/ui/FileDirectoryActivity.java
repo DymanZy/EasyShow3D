@@ -1,4 +1,4 @@
-package com.dyman.show3dmodel;
+package com.dyman.show3dmodel.ui;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.dyman.show3dmodel.R;
 import com.dyman.show3dmodel.adapter.FileRvListAdapter;
 import com.dyman.show3dmodel.adapter.listener.OnAdapterItemListener;
 import com.dyman.show3dmodel.bean.FileBean;

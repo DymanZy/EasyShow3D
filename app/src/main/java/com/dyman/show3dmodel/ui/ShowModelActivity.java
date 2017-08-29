@@ -1,4 +1,4 @@
-package com.dyman.show3dmodel;
+package com.dyman.show3dmodel.ui;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -19,11 +19,13 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 
+import com.dyman.show3dmodel.R;
 import com.dyman.show3dmodel.bean.ModelObject;
 import com.dyman.show3dmodel.bean.ObjObject;
 import com.dyman.show3dmodel.bean.ObjProObject;
 import com.dyman.show3dmodel.bean.StlObject;
 import com.dyman.show3dmodel.config.MyConfig;
+import com.dyman.show3dmodel.manager.SharePreferenceManager;
 import com.dyman.show3dmodel.utils.DialogUtils;
 import com.dyman.show3dmodel.utils.FileUtils;
 import com.dyman.show3dmodel.utils.IOUtils;
@@ -58,12 +60,15 @@ public class ShowModelActivity extends BaseActivity implements View.OnClickListe
     private final static int CHANGE_ZOOM_MODE = 302;  // 改变打印大小
     private int CHANGE_MODE = CHANGE_ZOOM_MODE;
 
+    private SharePreferenceManager sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_model);
         filePath = getIntent().getStringExtra("filePath");
+
+        sp = new SharePreferenceManager(this);
 
         initToolBar();
         initView();
@@ -344,8 +349,13 @@ public class ShowModelActivity extends BaseActivity implements View.OnClickListe
         }
         String fileType = FileUtils.getType(file.getName()).toLowerCase();
         if (fileType.equals("obj")) {
-            modelObject = new ObjObject(modelBytes, ShowModelActivity.this,
+            if (sp.isSMM()) {
+                modelObject = new ObjProObject(modelBytes, ShowModelActivity.this,
                     ModelObject.DRAW_MODEL, new ReadFinish());
+            } else {
+                modelObject = new ObjObject(modelBytes, ShowModelActivity.this,
+                        ModelObject.DRAW_MODEL, new ReadFinish());
+            }
         } else if(fileType.equals("stl")){
             modelObject = new StlObject(modelBytes, ShowModelActivity.this,
                     ModelObject.DRAW_MODEL, new ReadFinish());

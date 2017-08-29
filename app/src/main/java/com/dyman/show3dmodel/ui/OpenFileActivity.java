@@ -1,9 +1,8 @@
-package com.dyman.show3dmodel;
+package com.dyman.show3dmodel.ui;
 
 import android.content.Intent;
 import android.os.Environment;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,8 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
+import com.dyman.show3dmodel.R;
 import com.dyman.show3dmodel.adapter.FolderListAdapter;
 import com.dyman.show3dmodel.adapter.listener.OnAdapterItemListener;
 import com.dyman.show3dmodel.bean.FolderBean;

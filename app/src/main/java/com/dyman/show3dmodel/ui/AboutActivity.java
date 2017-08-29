@@ -1,11 +1,11 @@
-package com.dyman.show3dmodel;
+package com.dyman.show3dmodel.ui;
 
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.dyman.show3dmodel.R;
 import com.dyman.show3dmodel.config.MyConfig;
 
 public class AboutActivity extends BaseActivity {

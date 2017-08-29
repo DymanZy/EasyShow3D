@@ -56,6 +56,7 @@ public class ObjObject extends ModelObject{
         this.drawWay = drawMode;
         this.finishCallBack = finishCallBack;
         sp = new SharePreferenceManager(context);
+        spendTime = System.currentTimeMillis();
         processOBJ(objByte, context);
 
     }
@@ -266,6 +267,7 @@ public class ObjObject extends ModelObject{
 
                 finishCallBack.readModelFinish();
                 progressDialog.dismiss();
+                Log.i(TAG, "常规解析耗时：---------" + (System.currentTimeMillis() - spendTime));
 
                 Log.i(TAG, "--------------------------vertices.size = " + vertices.length);
                 Log.i(TAG, "--------------------------normals.size = " + normals.length);

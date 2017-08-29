@@ -3,6 +3,7 @@ package com.dyman.show3dmodel.thread;
 import android.util.Log;
 
 import com.dyman.show3dmodel.bean.ObjObject;
+import com.dyman.show3dmodel.bean.ObjProObject;
 import com.dyman.show3dmodel.utils.Normal;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class FaceThread extends Thread {
     private IAnalysisFinishCallback finishCallback;
 
     private float[] alv;
-    private ObjObject objModel;
+    private ObjProObject objModel;
 
     //顶点组装面索引列表--根据面的信息从文件中加载
     private ArrayList<Integer> alFaceIndex=new ArrayList<Integer>();
@@ -45,7 +46,7 @@ public class FaceThread extends Thread {
     private boolean isFinish = false;
 
 
-    public FaceThread(int threadID, ArrayList<String> fLines, int start, int end, float[] alv, ObjObject
+    public FaceThread(int threadID, ArrayList<String> fLines, int start, int end, float[] alv, ObjProObject
             objModel, IAnalysisFinishCallback finishCallback) {
         this.threadID = threadID;
         this.fLines = fLines;

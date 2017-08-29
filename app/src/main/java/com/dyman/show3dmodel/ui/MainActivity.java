@@ -1,4 +1,4 @@
-package com.dyman.show3dmodel;
+package com.dyman.show3dmodel.ui;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,9 +20,11 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.dyman.show3dmodel.R;
 import com.dyman.show3dmodel.adapter.FileListAdapter;
 import com.dyman.show3dmodel.db.DatabaseHelper;
 import com.dyman.show3dmodel.bean.FileBean;
+import com.dyman.show3dmodel.manager.SharePreferenceManager;
 import com.dyman.show3dmodel.utils.DialogUtils;
 import com.dyman.show3dmodel.utils.FileUtils;
 import com.dyman.show3dmodel.utils.SnackBarUtils;
@@ -230,10 +232,16 @@ public class MainActivity extends BaseActivity{
         int id = item.getItemId();
 
         if (id == R.id.action_about){
-            Intent it_about = new Intent(MainActivity.this, AboutActivity.class);
+            Intent it_about = new Intent(MainActivity.this, TestActivity.class);
             startActivity(it_about);
+//            Intent it_about = new Intent(MainActivity.this, AboutActivity.class);
+//            startActivity(it_about);
 
             return true;
+        } else if (id == R.id.action_smm) {
+            new SharePreferenceManager(MainActivity.this).setAnalysisWay(true);
+        } else if (id == R.id.action_normal) {
+            new SharePreferenceManager(MainActivity.this).setAnalysisWay(false);
         }
         return super.onOptionsItemSelected(item);
     }

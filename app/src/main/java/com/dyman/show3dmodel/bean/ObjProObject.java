@@ -4,9 +4,12 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 import com.dyman.show3dmodel.manager.SharePreferenceManager;
+import com.dyman.show3dmodel.thread.AnalysisThreadHelper;
 import com.dyman.show3dmodel.utils.Normal;
 
 import java.nio.ByteBuffer;
@@ -20,7 +23,8 @@ import java.util.HashSet;
  */
 public class ObjProObject extends ModelObject{
 
-    private static final String TAG = "ObjObject";
+    private static final String TAG = "ObjProObject";
+    public static final int READ_FINISH = 1001;
 
     private byte[] objByte = null;
     IFinishCallBack finishCallBack;
@@ -40,6 +44,20 @@ public class ObjProObject extends ModelObject{
     AsyncTask<byte[], Integer, float[]> task;
     ProgressDialog progressDialog;
 
+    AnalysisThreadHelper helper;
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == READ_FINISH) {
+                // 通知Activity解析完成
+                finishCallBack.readModelFinish();
+                Log.i(TAG, " 分步多线程耗时：------ " + (System.currentTimeMillis() - spendTime));
+            }
+        }
+    };
+
 
     public ObjProObject(byte[] objByte, Context context, int drawMode, IFinishCallBack finishCallBack) {
         this.modelType = "obj";
@@ -48,7 +66,14 @@ public class ObjProObject extends ModelObject{
         this.drawWay = drawMode;
         this.finishCallBack = finishCallBack;
         sp = new SharePreferenceManager(context);
-        processOBJ(objByte, context);
+
+        spendTime = System.currentTimeMillis();
+//        processOBJ(objByte, context);
+
+        helper = new AnalysisThreadHelper(3, this, mHandler);
+        helper.analysis(objByte);
+
+
     }
 
 
@@ -276,14 +301,15 @@ public class ObjProObject extends ModelObject{
 
                 initVertexData(vertices,normals);
 
+                // 通知Activity解析完成
                 finishCallBack.readModelFinish();
                 progressDialog.dismiss();
-
                 Log.i(TAG, "------------------------------vertices.size = " + vertices.length);
                 Log.i(TAG, "------------------------------normals.size = " + normals.length);
                 Log.i(TAG, "------------------------------length_x = " + (maxX-minX));
                 Log.i(TAG, "------------------------------length_y = " + (maxY-minY));
                 Log.i(TAG, "------------------------------length_z = " + (maxZ-minZ));
+
             }
         };
 

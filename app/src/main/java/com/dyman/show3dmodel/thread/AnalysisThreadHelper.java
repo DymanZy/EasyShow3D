@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.util.Log;
 
 import com.dyman.show3dmodel.bean.ObjObject;
+import com.dyman.show3dmodel.bean.ObjProObject;
 
 import java.util.ArrayList;
 
@@ -36,13 +37,13 @@ public class AnalysisThreadHelper {
 
 
     private int threadNum = 3;
-    private ObjObject objModel;
+    private ObjProObject objModel;
     private int vLineNum = 0;
     private int fLineNum = 0;
 
     private Handler mHandler;
 
-    public AnalysisThreadHelper(int threadNum, ObjObject objModel, Handler mHandler) {
+    public AnalysisThreadHelper(int threadNum, ObjProObject objModel, Handler mHandler) {
         this.threadNum = threadNum;
         this.objModel = objModel;
         this.mHandler = mHandler;
@@ -57,7 +58,7 @@ public class AnalysisThreadHelper {
      *  传入3D文件，先开三条子线程解析顶点数据，再开三条子线程解析面数据
      *  最后通过回调返回解析结果
      */
-    public void analysis(String fileContent) {
+    public void analysis(byte[] objByte) {
         //TODO 要将此方法改为异步执行
         Log.e(TAG, "analysis: ------------------------------开始解析3D模型");
         vLineNum = 0;
@@ -65,7 +66,8 @@ public class AnalysisThreadHelper {
 
         long alvTime = System.currentTimeMillis();
         // 1. 先将原数据处理分为顶点数据和面数据（这里很耗时间）
-        String[] objLines = fileContent.split("\n");
+        String objText = new String(objByte);
+        String[] objLines = objText.split("\n");
         for (int i = 0, len = objLines.length; i < len; i++) {
             String line = objLines[i];
             String[] tempsa = line.split("[ ]+");
@@ -149,7 +151,7 @@ public class AnalysisThreadHelper {
 
                 // 4.初始化顶点坐标与着色数据, 通过回调通知View显示模型
                 objModel.initVertexData(vertices,normals);
-//                mHandler.sendEmptyMessage(ObjObject.READ_FINISH);
+                mHandler.sendEmptyMessage(ObjProObject.READ_FINISH);
             }
 
             Log.i(TAG, "alvFaceFinish: ================threadID: "+threadID+" callback finish.");

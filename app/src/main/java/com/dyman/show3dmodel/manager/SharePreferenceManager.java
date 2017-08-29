@@ -68,5 +68,11 @@ public class SharePreferenceManager {
     }
 
 
+    public void setAnalysisWay(boolean b) {
+        edit.putBoolean("isSMM", b);
+        edit.commit();
+    }
+
+    public boolean isSMM() { return sp.getBoolean("isSMM", false); }
 
 }

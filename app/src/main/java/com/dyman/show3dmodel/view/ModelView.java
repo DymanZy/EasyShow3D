@@ -3,6 +3,7 @@ package com.dyman.show3dmodel.view;
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
+import android.os.Looper;
 import android.util.Log;
 
 import com.dyman.show3dmodel.bean.BaseBuilderObject;
