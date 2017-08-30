@@ -55,10 +55,7 @@ public class FaceThread extends Thread {
         this.alv = alv;
         this.finishCallback = finishCallback;
         this.objModel = objModel;
-
         this.beginTime = System.currentTimeMillis();
-
-        Log.e(TAG, "VerticesThread:-----threadID="+threadID+"，  开始行："+start+",  结束行："+ end);
     }
 
 
@@ -154,14 +151,8 @@ public class FaceThread extends Thread {
             normalsList.add(tn[1]);
             normalsList.add(tn[2]);
         }
-
-        long endTime = System.currentTimeMillis();
-        Log.e(TAG, "VerticesThread: ++++++++++++++++ startTime="+beginTime+",  endTime="+endTime+",   spend="+(endTime-beginTime));
-
         isFinish = true;
         finishCallback.alvFaceFinish(threadID, start, alvResult, normalsList);
-
-
     }
 
 

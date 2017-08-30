@@ -42,7 +42,6 @@ public class OpenFileActivity extends BaseActivity implements View.OnClickListen
         initToolbar();
         initView();
         initDatas();
-
     }
 
 
@@ -87,8 +86,6 @@ public class OpenFileActivity extends BaseActivity implements View.OnClickListen
         folderBean.setFolderPath(rootPath+File.separator+"tencent"+File.separator+"QQfile_recv");
         if (new File(folderBean.getFolderPath()).canRead()) {
             folderList.add(folderBean);
-        } else {
-            Log.i(TAG, "---------------- invalid file path :"+folderBean.getFolderPath());
         }
 
         folderBean = new FolderBean();
@@ -96,8 +93,6 @@ public class OpenFileActivity extends BaseActivity implements View.OnClickListen
         folderBean.setFolderPath(rootPath+File.separator+"Download");
         if (new File(folderBean.getFolderPath()).canRead()) {
             folderList.add(folderBean);
-        } else {
-            Log.i(TAG, "---------------- invalid file path :"+folderBean.getFolderPath());
         }
 
         folderBean = new FolderBean();
@@ -105,8 +100,6 @@ public class OpenFileActivity extends BaseActivity implements View.OnClickListen
         folderBean.setFolderPath(rootPath+File.separator+"documents");
         if (new File(folderBean.getFolderPath()).canRead()) {
             folderList.add(folderBean);
-        } else {
-            Log.i(TAG, "---------------- invalid file path :"+folderBean.getFolderPath());
         }
 
         folderBean = new FolderBean();
@@ -114,8 +107,6 @@ public class OpenFileActivity extends BaseActivity implements View.OnClickListen
         folderBean.setFolderPath(rootPath+File.separator+"tencent"+File.separator+"MicroMsg"+File.separator+"Download");
         if (new File(folderBean.getFolderPath()).canRead()) {
             folderList.add(folderBean);
-        } else {
-            Log.i(TAG, "---------------- invalid file path :"+folderBean.getFolderPath());
         }
 
         adapter = new FolderListAdapter(folderList);

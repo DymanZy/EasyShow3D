@@ -60,8 +60,6 @@ public class MainActivity extends BaseActivity{
         initView();
         initDatas();
         checkAcceptFile();
-
-
     }
 
 
@@ -70,7 +68,6 @@ public class MainActivity extends BaseActivity{
         openFileLl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.e(TAG, "onClick: 打开文件");
                 Intent it = new Intent(MainActivity.this, OpenFileActivity.class);
                 startActivity(it);
             }
@@ -103,7 +100,6 @@ public class MainActivity extends BaseActivity{
                 final FileBean fileBean = fileList.get(position);
                 switch (index) {
                     case 0://share
-                        Log.i(TAG, "onMenuItemClick: --------------------share file: "+fileBean.getFileName());
                         Uri fileUri = Uri.fromFile(new File(fileBean.getFilePath()));
                         Intent shareIntent = new Intent();
                         shareIntent.setAction(Intent.ACTION_SEND);
@@ -113,7 +109,6 @@ public class MainActivity extends BaseActivity{
 
                         break;
                     case 1://delete
-                        Log.i(TAG, "onMenuItemClick: --------------------delete file: "+fileBean.getFileName());
                         sureDelete = true;
                         final int fileIndex = fileList.indexOf(fileBean);
                         fileList.remove(fileIndex);
@@ -122,7 +117,6 @@ public class MainActivity extends BaseActivity{
                                 .show(getString(R.string.tip_cancel), new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                Log.i(TAG, "onClick: -------------------------撤销删除");
                                 sureDelete = false;
                                 fileList.add(fileIndex, fileBean);
                                 adapter.notifyDataSetChanged();
@@ -133,7 +127,6 @@ public class MainActivity extends BaseActivity{
                             public void run() {
                                 if (sureDelete) {
                                     databaseHelper.delete(fileBean.getId());
-                                    Log.i(TAG, "onClick: -------------------------确定删除");
                                 }
                             }
                         }, 4000);
@@ -147,13 +140,12 @@ public class MainActivity extends BaseActivity{
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 final FileBean fileBean = fileList.get(i);
-                Log.i(TAG, "onItemClick: -------------------------click item:"+fileBean.getFileName());
                 File file = new File(fileBean.getFilePath());
                 if (file.canRead()) {
                     open3DFile(file);
                 } else {
-                    DialogUtils.showAlerDialog(MainActivity.this, getString(R.string.tip_is_delete_invalid_file), new DialogInterface.OnClickListener
-                            () {
+                    DialogUtils.showAlerDialog(MainActivity.this, getString(R.string.tip_is_delete_invalid_file),
+                            new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             databaseHelper.delete(fileBean.getId());
@@ -201,7 +193,7 @@ public class MainActivity extends BaseActivity{
         fileBean.setCreateTime(TimeUtils.getTimeFormat(file.lastModified()));
         databaseHelper.insert(fileBean);
 
-        Log.e(TAG, "openFile: 3D文件的大小= "+file.length()/1024/1024+"M");
+        Log.i(TAG, "openFile: 3D文件的大小= "+file.length()/1024/1024+"M");
         if (file.length()>10*1024*1024) {
             ToastUtils.showLong(MainActivity.this, getString(R.string.tip_file_maybe_analysis_fail));
         }
@@ -232,11 +224,8 @@ public class MainActivity extends BaseActivity{
         int id = item.getItemId();
 
         if (id == R.id.action_about){
-            Intent it_about = new Intent(MainActivity.this, TestActivity.class);
+            Intent it_about = new Intent(MainActivity.this, AboutActivity.class);
             startActivity(it_about);
-//            Intent it_about = new Intent(MainActivity.this, AboutActivity.class);
-//            startActivity(it_about);
-
             return true;
         } else if (id == R.id.action_smm) {
             new SharePreferenceManager(MainActivity.this).setAnalysisWay(true);

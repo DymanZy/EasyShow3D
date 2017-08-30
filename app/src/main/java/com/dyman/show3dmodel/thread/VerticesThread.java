@@ -13,7 +13,6 @@ import java.util.ArrayList;
 public class VerticesThread extends Thread {
 
     private static final String TAG = "VerticesThread";
-
     /** 定义解析的起始点 */
     private int start;
     /** 定义解析的结束点 */
@@ -24,8 +23,6 @@ public class VerticesThread extends Thread {
     private int threadID;
     /** 解析完成的回调 */
     private IAnalysisFinishCallback finishCallback;
-
-
     private long beginTime;
     private boolean isFinish = false;
 
@@ -36,9 +33,7 @@ public class VerticesThread extends Thread {
         this.start = start;
         this.end = end;
         this.finishCallback = finishCallback;
-
         this.beginTime = System.currentTimeMillis();
-        Log.e(TAG, "VerticesThread:-----threadID="+threadID+"，  开始行："+start+",  结束行："+ end);
     }
 
 
@@ -55,10 +50,6 @@ public class VerticesThread extends Thread {
                 alv.add(Float.parseFloat(tempsa[3]));
             }
         }
-
-
-        long endTime = System.currentTimeMillis();
-        Log.e(TAG, "VerticesThread: ++++++++++++++++ startTime="+beginTime+",  endTime="+endTime+",   spend="+(endTime-beginTime));
         isFinish = true;
         finishCallback.alvFinish(threadID, start, alv);
 

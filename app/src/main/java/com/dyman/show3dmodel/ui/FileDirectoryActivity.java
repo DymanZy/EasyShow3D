@@ -112,8 +112,6 @@ public class FileDirectoryActivity extends BaseActivity implements OnAdapterItem
             @Override
             public void onItemClick(View v, int position) {
                 final String directoryPath = levelList.get(position);
-                Log.e(TAG, "-------------------------position="+position);
-                Log.e(TAG, "-------------------------levelList.size="+levelList.size());
                 int removeNum = levelList.size() - position;
                 for (int i = 0; i < removeNum; i++) {
                     levelList.remove(levelList.size() - 1);//移除后levelList.size会自减
@@ -184,7 +182,6 @@ public class FileDirectoryActivity extends BaseActivity implements OnAdapterItem
                         }
                     }, 500);
                 } else {
-                    Log.e(TAG, "--------------------打开3D文件："+file.getName());
                     open3DFile(file);
                 }
             }
@@ -208,7 +205,7 @@ public class FileDirectoryActivity extends BaseActivity implements OnAdapterItem
         databaseHelper.insert(fileBean);
 
 
-        Log.e(TAG, "openFile: 3D文件的大小= "+file.length()/1024/1024+"M");
+        Log.i(TAG, "openFile: 3D文件的大小= "+file.length()/1024/1024+"M");
         if (file.length()>10*1024*1024) {
             ToastUtils.showLong(FileDirectoryActivity.this, getString(R.string.tip_file_maybe_analysis_fail));
         }
@@ -229,7 +226,7 @@ public class FileDirectoryActivity extends BaseActivity implements OnAdapterItem
         for (int i = 0; i < indexs.length; i++) {//--------for1
             File[] files = new File(indexs[i]).listFiles();
             if (files == null) {
-                Log.i(TAG, "searchFile: ------------目录："+indexs[i]+" 为空");
+                Log.e(TAG, "searchFile: ------------目录："+indexs[i]+" 为空");
             } else {
                 for (File file : files) {//--------for2
                     if (!file.canRead()) {
@@ -289,7 +286,7 @@ public class FileDirectoryActivity extends BaseActivity implements OnAdapterItem
                 }
             }, 500);
         } else {
-            Log.e(TAG, "--------------------打开3D文件："+file.getName());
+            Log.i(TAG, "--------------------打开3D文件："+file.getName());
             open3DFile(file);
         }
     }
@@ -340,7 +337,6 @@ public class FileDirectoryActivity extends BaseActivity implements OnAdapterItem
 
         private String getDirectoryName(String directoryPath) {
             String name = directoryPath.substring(directoryPath.lastIndexOf("/") + 1);
-            Log.i(TAG, "getDirectoryName: -------------name="+name);
             return name;
         }
 

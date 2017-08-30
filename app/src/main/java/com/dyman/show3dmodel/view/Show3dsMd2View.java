@@ -48,7 +48,6 @@ public class Show3dsMd2View extends GLSurfaceView{
 
     public Show3dsMd2View(Context context, String filePath) {
         super(context);
-        Log.e(TAG, "Show3dsMd2View is called");
         setEGLConfigChooser(new EGLConfigChooser(){
 
             @Override
@@ -222,7 +221,6 @@ public class Show3dsMd2View extends GLSurfaceView{
             }
 
             if (zoomSize != 1) {
-                Log.e(TAG, "onDrawFrame: >>>>>>>>>>>    zoomSize="+zoomSize);
                 model.setScale(zoomSize);
                 zoomSize = 1;
             }

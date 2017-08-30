@@ -272,19 +272,16 @@ public class ShowModelActivity extends BaseActivity implements View.OnClickListe
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         switch (CHANGE_MODE) {
             case CHANGE_X_MODE:
-                Log.i(TAG, "onProgressChanged: ----x---- progress = "+progress);
                 modelObject.xRotateAngle = (float) (progress - 180);
                 showLevelTv.setText(String.valueOf(modelObject.xRotateAngle)+"°");
                 break;
             case CHANGE_ZOOM_MODE:
-                Log.i(TAG, "onProgressChanged: ----x---- progress = "+progress);
                 if (modelObject != null) {
                     modelObject.printScale = (float)progress / 10;
                     showLevelTv.setText(String.valueOf(modelObject.printScale)+"倍");
                 }
                 break;
             case CHANGE_Z_MODE:
-                Log.i(TAG, "onProgressChanged: ----x---- progress = "+progress);
                 modelObject.zRotateAngle = (float) (progress - 180);
                 showLevelTv.setText(String.valueOf(modelObject.zRotateAngle)+"°");
                 break;
@@ -313,10 +310,6 @@ public class ShowModelActivity extends BaseActivity implements View.OnClickListe
                     showLayout.addView(sModelView);
                     sModelView.requestFocus();
                     sModelView.setFocusableInTouchMode(true);
-                    Log.e(TAG, "readModelFinish: -----------------------------------------------");
-                    Log.e(TAG, "xRotateAngle = "+modelObject.xRotateAngle);
-                    Log.e(TAG, "zRotateAngle = "+modelObject.zRotateAngle);
-                    Log.e(TAG, "printScale = "+modelObject.printScale);
                 }
             }
         }

@@ -79,17 +79,11 @@ public class AnalysisThreadHelper {
                 fLines.add(line);
             }
         }
-        Log.e(TAG, "analysis: +++++++++++++++++++++++++++ alvTime="+(System.currentTimeMillis()-alvTime));
-
-        Log.e(TAG, "analysis: ---------vLineNum="+vLineNum+",  fLineNum="+fLineNum);
         alv = new float[vLineNum*3];
         vertices = new float[fLineNum*9];
         normals = new float[fLineNum*9];
-
-
         // 2. 开启线程组解析顶点数据
         int vAveLength = vLineNum/3;
-        Log.e(TAG, "analysis: ---------顶点总数："+vLineNum+",  平均："+vAveLength);
         for (int i = 0; i < threadNum; i++) {
             if (i == (threadNum-1)) {
                 vThreads[i] = new VerticesThread(i, vLines, i*vAveLength, vLineNum, finishCallback);
@@ -109,7 +103,6 @@ public class AnalysisThreadHelper {
 
         @Override
         public void alvFinish(int threadID, int index, ArrayList<Float> alvList) {
-            Log.i(TAG, "alvFinish: ================threadID: "+threadID+",     index="+index);
             for (int i = 0, len = alvList.size(); i<len; i++) {
                 alv[index*3 + i] = alvList.get(i);
             }
@@ -130,12 +123,10 @@ public class AnalysisThreadHelper {
                 }
 
             }
-            Log.i(TAG, "alvFinish: ================threadID: "+threadID+" callback finish.");
         }
 
         @Override
         public void alvFaceFinish(int threadID, int index, ArrayList<Float> verticeList, ArrayList<Float> normalsList) {
-            Log.i(TAG, "alvFaceFinish: ================threadID: "+threadID+",    index = "+index);
 
             for (int i = 0, len = normalsList.size(); i<len; i++) {
                 normals[index*9 + i] = normalsList.get(i);
@@ -154,7 +145,6 @@ public class AnalysisThreadHelper {
                 mHandler.sendEmptyMessage(ObjProObject.READ_FINISH);
             }
 
-            Log.i(TAG, "alvFaceFinish: ================threadID: "+threadID+" callback finish.");
         }
     };
 

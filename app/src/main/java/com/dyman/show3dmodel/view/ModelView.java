@@ -68,13 +68,11 @@ public class ModelView extends GLSurfaceView {
         if (maxSize < modelObject.maxZ-modelObject.minZ){
             maxSize = modelObject.maxZ-modelObject.minZ;
         }
-        Log.e(TAG, "initModelSize: --------------------------size="+maxSize);
         if (maxSize > 20f) {    //大于20f，缩小模型
             wholeScale = 18f/maxSize;
         } else if(maxSize < 10f) {  //小于10f，放大模型
             wholeScale = 15f/maxSize;
         }
-        Log.e(TAG, "initModelSize: --------------------------wholeScale="+wholeScale);
     }
 
 
