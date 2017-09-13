@@ -22,18 +22,18 @@
 
 ```java
 allprojects {
-	repositories {
-		...
-		maven { url 'https://www.jitpack.io' }
-	}
+  repositories {
+    ...
+    maven { url 'https://www.jitpack.io' }
+  }
 }
 ```
 
 2.添加依赖
 
-```
+```java
 dependencies {
-	compile 'com.github.DymanZy:EasyShow3D:v1.1'
+  compile 'com.github.DymanZy:EasyShow3D:1.1'
 }
 ```
 
@@ -43,9 +43,9 @@ dependencies {
 
 ```java
 <com.dyman.easyshow3d.view.ShowModelView
-        android:id="@+id/showModelView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+  android:id="@+id/showModelView"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"/>
 ```
 
 #### 2.设置需要解析的模型
