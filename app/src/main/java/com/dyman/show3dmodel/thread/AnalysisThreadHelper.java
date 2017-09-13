@@ -144,7 +144,6 @@ public class AnalysisThreadHelper {
                 objModel.initVertexData(vertices,normals);
                 mHandler.sendEmptyMessage(ObjProObject.READ_FINISH);
             }
-
         }
     };
 

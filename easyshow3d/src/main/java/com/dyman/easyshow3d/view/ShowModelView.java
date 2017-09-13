@@ -1,10 +1,11 @@
-package com.dyman.show3dmodel.view;
+package com.dyman.easyshow3d.view;
 
 import android.content.Context;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import com.dyman.show3dmodel.bean.ModelObject;
+import com.dyman.easyshow3d.bean.ModelObject;
 
 
 /**
@@ -14,9 +15,15 @@ public class ShowModelView extends ModelView{
 
     private static final String TAG = "ShowModelView";
 
-    public ShowModelView(Context context, ModelObject modelObject) {
-        super(context, modelObject);
+    public ShowModelView(Context context) {
+        this(context, null);
     }
+
+    public ShowModelView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+
 
     /**
      *  触摸事件回调方法，支持动作：单指旋转，双指缩放
@@ -38,7 +45,6 @@ public class ShowModelView extends ModelView{
 
             case MotionEvent.ACTION_POINTER_DOWN:
                 if (e.getPointerCount() >= 2){
-                    Log.e(TAG, "onTouchEvent: ------------------------------双指放下");
                     pinchStartDistance = getPinchDistance(e);
                     if (pinchStartDistance >= 50f){
                         touchMode = TOUCH_ZOOM;
@@ -48,11 +54,9 @@ public class ShowModelView extends ModelView{
 
             case MotionEvent.ACTION_MOVE:
                 if (touchMode == TOUCH_ZOOM && pinchStartDistance > 0){
-                    Log.e(TAG, "onTouchEvent: ------------------------------缩放");
                     changeScale = getPinchDistance(e) / pinchStartDistance;
                     wholeScale = changeScale * previousScale;
                 } else if(touchMode == TOUCH_DRAG){
-                    Log.e(TAG, "onTouchEvent: ------------------------------旋转");
                     float dy = y - mPreviousY;//计算触控笔Y位移
                     float dx = x - mPreviousX;//计算触控笔X位移
                     mRenderer.yAngle += dx * TOUCH_SCALE_FACTOR;//设置沿x轴旋转角度

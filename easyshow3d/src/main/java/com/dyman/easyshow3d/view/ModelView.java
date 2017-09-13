@@ -1,14 +1,14 @@
-package com.dyman.show3dmodel.view;
+package com.dyman.easyshow3d.view;
 
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
-import android.os.Looper;
-import android.util.Log;
+import android.util.AttributeSet;
 
-import com.dyman.show3dmodel.bean.BaseBuilderObject;
-import com.dyman.show3dmodel.bean.ModelObject;
-import com.dyman.show3dmodel.utils.MatrixState;
+
+import com.dyman.easyshow3d.bean.BaseBuilderObject;
+import com.dyman.easyshow3d.bean.ModelObject;
+import com.dyman.easyshow3d.utils.MatrixState;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -42,19 +42,34 @@ public class ModelView extends GLSurfaceView {
     private float maxSize;  //有疑问，应该直接用x轴的数据就行了
     private float initHeight;
     public float printProgress = 0;
-
     public ModelRenderer mRenderer;
 
-    public ModelView(Context context, ModelObject modelObject) {
-        super(context);
+
+    public ModelView(Context context) {
+        this(context, null);
+    }
+
+
+    public ModelView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
+    }
+
+
+    /** 初始化 */
+    private void init() {
         // 设置OpenGL的版本号2.0
         this.setEGLContextClientVersion(2);
-        mRenderer = new ModelRenderer(modelObject);
+        mRenderer = new ModelRenderer();
         setRenderer(mRenderer);
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
-        // 初始化模型的显示大小，自适应
-        initModelScale(modelObject);
     }
+
+
+    public void setModelObject(ModelObject modelObject) {
+        mRenderer.setModelObject(modelObject);
+    }
+
 
     /**
      *  初始化模型缩放倍数，使其完全显示在屏幕上
@@ -86,7 +101,10 @@ public class ModelView extends GLSurfaceView {
         private BaseBuilderObject baseBuilder;
 
 
-        public ModelRenderer(ModelObject modelObject) { this.modelObject = modelObject; }
+        public void setModelObject(ModelObject modelObject) {
+            initModelScale(modelObject);
+            this.modelObject = modelObject;
+        }
 
 
         @Override
@@ -126,6 +144,10 @@ public class ModelView extends GLSurfaceView {
             // 清除深度缓冲与颜色缓冲
             GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
 
+            if (modelObject == null) {
+                return;
+            }
+
             // 画3D模型
             MatrixState.pushMatrix();
             MatrixState.translate(0, -2f, -25f);
@@ -136,29 +158,26 @@ public class ModelView extends GLSurfaceView {
                     wholeScale * modelObject.printScale,
                     wholeScale * modelObject.printScale,
                     wholeScale * modelObject.printScale); // 修改整体显示的大小
-            // 绘制模型
-            if (modelObject != null){
-                //  绘制基础模型
-                if (modelObject.drawWay == ModelObject.DRAW_MODEL){
-                    modelObject.drawSelf(ModelView.this);
-                //  绘制带进度显示的模型
-                } else if(modelObject.drawWay == ModelObject.DRAW_PROGRESS){
-                    // 因为两种格式的模型的中心点坐标不同，分开处理
-                    if (modelObject.modelType.equals("stl")) {
-                        float maxHeight = modelObject.maxY-modelObject.minY;
-                        float finishHeight = (maxHeight) * printProgress - maxHeight/2;
-                        float clipPlaneUp[] = {0, 1, 0, modelObject.maxY};
-                        float clipPlaneDown[] = {0, -1, 0, finishHeight};
-                        modelObject.drawSelfWithProgress(clipPlaneDown, GLES20.GL_TRIANGLES, ModelView.this);
-                        modelObject.drawSelfWithProgress(clipPlaneUp, GLES20.GL_LINE_LOOP, ModelView.this);
+            //  绘制模型
+            if (modelObject.drawWay == ModelObject.DRAW_MODEL){
+                modelObject.drawSelf(ModelView.this);
+            //  绘制带进度显示的模型
+            } else if(modelObject.drawWay == ModelObject.DRAW_PROGRESS){
+                // 因为两种格式的模型的中心点坐标不同，分开处理
+                if (modelObject.modelType.equals("stl")) {
+                    float maxHeight = modelObject.maxY-modelObject.minY;
+                    float finishHeight = (maxHeight) * printProgress - maxHeight/2;
+                    float clipPlaneUp[] = {0, 1, 0, modelObject.maxY};
+                    float clipPlaneDown[] = {0, -1, 0, finishHeight};
+                    modelObject.drawSelfWithProgress(clipPlaneDown, GLES20.GL_TRIANGLES, ModelView.this);
+                    modelObject.drawSelfWithProgress(clipPlaneUp, GLES20.GL_LINE_LOOP, ModelView.this);
 
-                    } else if (modelObject.modelType.equals("obj")){
-                        float finishHeight = (modelObject.maxY-modelObject.minY) * printProgress + modelObject.minY;
-                        float clipPlaneUp[] = {0, 1, 0, modelObject.maxY};
-                        float clipPlaneDown[] = {0, -1, 0, finishHeight};
-                        modelObject.drawSelfWithProgress(clipPlaneDown, GLES20.GL_TRIANGLES, ModelView.this);
-                        modelObject.drawSelfWithProgress(clipPlaneUp, GLES20.GL_LINE_LOOP, ModelView.this);
-                    }
+                } else if (modelObject.modelType.equals("obj")){
+                    float finishHeight = (modelObject.maxY-modelObject.minY) * printProgress + modelObject.minY;
+                    float clipPlaneUp[] = {0, 1, 0, modelObject.maxY};
+                    float clipPlaneDown[] = {0, -1, 0, finishHeight};
+                    modelObject.drawSelfWithProgress(clipPlaneDown, GLES20.GL_TRIANGLES, ModelView.this);
+                    modelObject.drawSelfWithProgress(clipPlaneUp, GLES20.GL_LINE_LOOP, ModelView.this);
                 }
             }
             MatrixState.popMatrix();

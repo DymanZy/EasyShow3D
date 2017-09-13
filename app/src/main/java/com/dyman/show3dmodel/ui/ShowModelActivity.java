@@ -3,6 +3,7 @@ package com.dyman.show3dmodel.ui;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,6 +20,8 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 
+import com.dyman.easyshow3d.ModelFactory;
+import com.dyman.easyshow3d.imp.ModelLoaderListener;
 import com.dyman.show3dmodel.R;
 import com.dyman.show3dmodel.bean.ModelObject;
 import com.dyman.show3dmodel.bean.ObjObject;
@@ -131,6 +134,7 @@ public class ShowModelActivity extends BaseActivity implements View.OnClickListe
      */
     private void isHaveFile(String filePath){
         if (filePath != null && !filePath.equals("")) {
+
             File file = new File(filePath);
             openModelFile(file);
         } else {
@@ -326,6 +330,9 @@ public class ShowModelActivity extends BaseActivity implements View.OnClickListe
      * @param file
      */
     private void openModelFile(File file) {
+
+        BitmapFactory.decodeFile("");
+
         if (sModelView != null){
             showLayout.removeAllViews();
             System.gc();
@@ -357,6 +364,32 @@ public class ShowModelActivity extends BaseActivity implements View.OnClickListe
             showLayout.addView(sv);
             sv.requestFocus();
             sv.setFocusableInTouchMode(true);
+        }
+    }
+
+
+
+
+    private void moduleTest(String filePath) {
+        ModelFactory.decodeFile(ShowModelActivity.this, filePath, new ModelListener());
+    }
+
+    class ModelListener implements ModelLoaderListener {
+
+        @Override
+        public void loadedUpdate(float progress) {
+            Log.i(TAG, "loadedUpdate: ----------- 解析进度： "+progress);
+        }
+
+        @Override
+        public void loadedFinish(com.dyman.easyshow3d.bean.ModelObject model) {
+            Log.i(TAG, "loadedFinish: ----------- 解析完成");
+            Log.i(TAG, "loadedFinish: 模型数据——> maxX="+model.maxX+"   maxY="+model.maxY+"   maxZ="+model.maxZ);
+        }
+
+        @Override
+        public void loaderCancel() {
+            Log.i(TAG, "loaderCancel: ----------- 解析取消");
         }
     }
 }

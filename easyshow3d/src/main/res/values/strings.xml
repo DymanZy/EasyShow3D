@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">EasyShow3D</string>
+
+    <string name="easy_show_stl_load_progress_message">请等一会.</string>
+    <string name="easy_show_stl_load_progress_title">STL 文件加载中...</string>
+    <string name="easy_show_error_fetch_data">STL 文件解析失败.</string>
+    <string name="easy_show_error_outbig"> 文件过大，解析失败！</string>
+    <string name="easy_show_close_dialog">关闭对话框</string>
+</resources>

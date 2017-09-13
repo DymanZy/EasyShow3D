@@ -1,4 +1,4 @@
-package com.dyman.show3dmodel.bean;
+package com.dyman.easyshow3d.bean;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -7,8 +7,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.dyman.show3dmodel.R;
-import com.dyman.show3dmodel.manager.SharePreferenceManager;
+
+import com.dyman.easyshow3d.R;
+import com.dyman.easyshow3d.imp.ModelLoaderListener;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -29,17 +30,16 @@ public class StlObject extends ModelObject {
     private float[] normal_array = null;
     private float[] vertex_array = null;
 
-    private IFinishCallBack finishCallBack;
-    private ProgressDialog progressDialog;
+    private ModelLoaderListener listener;
     private AsyncTask<byte[], Integer, float[]> task;
+    private int totalLines = 0;
 
-    public StlObject(byte[] stlBytes, Context context, int drawMode, IFinishCallBack finishCallBack) {
+    public StlObject(byte[] stlBytes, Context context, int drawMode, ModelLoaderListener listener) {
         this.modelType = "stl";
 
         this.stlBytes = stlBytes;
-        this.finishCallBack = finishCallBack;
+        this.listener = listener;
         this.drawWay = drawMode;
-        sp = new SharePreferenceManager(context);
         processSTL(stlBytes, context);
     }
 
@@ -125,16 +125,6 @@ public class StlObject extends ModelObject {
 
         normalList = new ArrayList<Float>();
 
-        progressDialog = prepareProgressDialog(context, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                if (task != null && !task.isCancelled()) {
-                    if (task.cancel(true)){
-                        finishCallBack.cancelLoadModel();
-                    }
-                }
-            }
-        });
 
         task = new AsyncTask<byte[], Integer, float[]>() {
 
@@ -147,11 +137,11 @@ public class StlObject extends ModelObject {
                 vertext_size=(stlLines.length-2)/7;//每个facet(表示一个三角形数据)由7行数据组成， 再整体减去首句和末句。
                 vertex_array=new float[vertext_size*9];//vertext_size为三角形个数，每个顶点3个坐标
                 normal_array=new float[vertext_size*9];
-                progressDialog.setMax(stlLines.length);
+                totalLines = stlLines.length;
 
                 int normal_num=0;
                 int vertex_num=0;
-                for (int i = 0; i < stlLines.length; i++) {
+                for (int i = 0; i < totalLines; i++) {
                     String string = stlLines[i].trim();
                     if (string.startsWith("facet normal ")) {
                         string = string.replaceFirst("facet normal ", "");
@@ -189,8 +179,9 @@ public class StlObject extends ModelObject {
                 vertex_array=new float[vertext_size*9];
                 normal_array=new float[vertext_size*9];
 
-                progressDialog.setMax(vertext_size);
-                for (int i = 0; i < vertext_size; i++) {
+                totalLines = vertext_size;
+
+                for (int i = 0; i < totalLines; i++) {
                     for(int n=0;n<3;n++){
                         normal_array[i*9+n*3]=Float.intBitsToFloat(getIntWithLittleEndian(stlBytes, 84 + i * 50));
                         normal_array[i*9+n*3+1]=Float.intBitsToFloat(getIntWithLittleEndian(stlBytes, 84 + i * 50 + 4));
@@ -220,7 +211,7 @@ public class StlObject extends ModelObject {
                     vertex_array[i*9+7]=y;
                     vertex_array[i*9+8]=z;
 
-                    if (i % (vertext_size / 50) == 0) {
+                    if (i % (totalLines / 50) == 0) {
                         publishProgress(i);//进度条每次更新 5%
                     }
                 }
@@ -250,32 +241,21 @@ public class StlObject extends ModelObject {
 
             @Override
             public void onProgressUpdate(Integer... values) {
-                progressDialog.setProgress(values[0]);
-
+                float progress = (float) values[0] / (float) totalLines;
+                listener.loadedUpdate(progress);
             }
 
             @Override
             protected void onPostExecute(float[] vertexList) {
 
                 if (normal_array.length < 1 || vertex_array.length < 1) {
-                    Toast.makeText(context, context.getString(R.string.error_fetch_data), Toast.LENGTH_LONG).show();
-                    progressDialog.dismiss();
+                    Toast.makeText(context, context.getString(R.string.easy_show_error_fetch_data), Toast.LENGTH_LONG).show();
                     return;
                 }
 
-                System.out.println("zwcnormalsize"+vertext_size);
-
-                finishCallBack.readModelFinish();
+                listener.loadedFinish(StlObject.this);
                 initVertexData(vertex_array, normal_array, vertext_size);
 
-                Log.e(TAG, "---------------------------------------maxX=="+maxX);
-                Log.e(TAG, "---------------------------------------minX=="+minX);
-                Log.e(TAG, "---------------------------------------maxY=="+maxY);
-                Log.e(TAG, "---------------------------------------minY=="+minY);
-                Log.e(TAG, "---------------------------------------maxZ=="+maxZ);
-                Log.e(TAG, "---------------------------------------minZ=="+minZ);
-
-                progressDialog.dismiss();
             }
         };
 
