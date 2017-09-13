@@ -52,22 +52,22 @@ dependencies {
 
 ```java
 ModelFactory.decodeFile(ShowModelActivity.this, filePath, new ModelLoaderListener() {
-	@Override
-  	public void loadedUpdate(float progress) {
-    	Log.i(TAG, "模型解析进度： " + progress);
-  	}
+  @Override
+  public void loadedUpdate(float progress) {
+    Log.i(TAG, "模型解析进度： " + progress);
+  }
 
-  	@Override
-  	public void loadedFinish(ModelObject modelObject) {
-    	if (modelObject != null) {
-          	//	解析完成，显示模型
-      		showModelView.setModelObject(modelObject);
-    	}
-  	}
+  @Override
+  public void loadedFinish(ModelObject modelObject) {
+    if (modelObject != null) {
+      //	解析完成，显示模型
+      showModelView.setModelObject(modelObject);
+    }
+  }
 
-  	@Override
-  	public void loaderCancel() {
-  	}
+  @Override
+  public void loaderCancel() {
+  }
 });
 ```
 
