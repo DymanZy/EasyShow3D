@@ -39,8 +39,6 @@ public class ModelView extends GLSurfaceView {
     /**
      * 打印进度计算相关
      */
-    private float maxSize;  //有疑问，应该直接用x轴的数据就行了
-    private float initHeight;
     public float printProgress = 0;
     public ModelRenderer mRenderer;
 

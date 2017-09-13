@@ -1,10 +1,9 @@
-package com.dyman.show3dmodel.view;
+package com.dyman.easyshow3d.view;
 
 import android.content.Context;
 import android.net.Uri;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
-import android.util.Log;
 import android.view.MotionEvent;
 
 import com.threed.jpct.Camera;
