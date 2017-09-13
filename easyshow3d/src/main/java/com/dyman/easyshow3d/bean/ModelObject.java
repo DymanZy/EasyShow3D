@@ -63,27 +63,6 @@ public class ModelObject {
 
 
     /**
-     *  加载进度框
-     * @param context
-     * @return
-     */
-    public ProgressDialog prepareProgressDialog(Context context, DialogInterface.OnClickListener onClickListener){
-        ProgressDialog progressDialog = new ProgressDialog(context);
-        progressDialog.setTitle(R.string.easy_show_stl_load_progress_title);
-        progressDialog.setMax(0);
-        progressDialog.setMessage(context.getString(R.string.easy_show_stl_load_progress_message));
-        progressDialog.setIndeterminate(false);
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        progressDialog.setCancelable(false);
-        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消", onClickListener);
-
-        progressDialog.show();
-
-        return progressDialog;
-    }
-
-
-    /**
      *  修正模型的大小
      * @param x
      * @param y
@@ -277,7 +256,5 @@ public class ModelObject {
         result.position(0);
         return result;
     }
-
-
 
 }

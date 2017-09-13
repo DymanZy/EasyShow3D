@@ -13,6 +13,7 @@ import com.dyman.easyshow3d.imp.ModelLoaderListener;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -130,7 +131,6 @@ public class StlObject extends ModelObject {
 
             //  ASCII文件格式
             float[] processText(String stlText) throws Exception {
-                List<Float> vertexList = new ArrayList<Float>();
                 normalList.clear();
 
                 String[] stlLines = stlText.split("\n");
@@ -168,7 +168,6 @@ public class StlObject extends ModelObject {
                         publishProgress(i);
                     }
                 }
-                //vertext_size=vertex_array.length;
                 return vertex_array;
             }
 
@@ -211,8 +210,8 @@ public class StlObject extends ModelObject {
                     vertex_array[i*9+7]=y;
                     vertex_array[i*9+8]=z;
 
-                    if (i % (totalLines / 50) == 0) {
-                        publishProgress(i);//进度条每次更新 5%
+                    if (i % (totalLines / 100) == 0) {
+                        publishProgress(i);
                     }
                 }
 
@@ -242,7 +241,9 @@ public class StlObject extends ModelObject {
             @Override
             public void onProgressUpdate(Integer... values) {
                 float progress = (float) values[0] / (float) totalLines;
-                listener.loadedUpdate(progress);
+                DecimalFormat df = new DecimalFormat("#.00");
+                float f = Float.valueOf(df.format(progress));
+                listener.loadedUpdate(f);
             }
 
             @Override

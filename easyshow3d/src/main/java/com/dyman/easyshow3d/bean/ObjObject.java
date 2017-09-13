@@ -12,6 +12,7 @@ import com.dyman.easyshow3d.utils.Normal;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,7 +24,6 @@ public class ObjObject extends ModelObject{
 
     private static final String TAG = "ObjObject";
 
-    private byte[] objByte = null;
     private ModelLoaderListener listener;
 
     //原始顶点坐标列表--直接从obj文件中加载
@@ -35,11 +35,8 @@ public class ObjObject extends ModelObject{
     //平均前各个索引对应的点的法向量集合Map
     //此HashMap的key为点的索引， value为点所在的各个面的法向量的集合
     HashMap<Integer,HashSet<Normal>> hmn=new HashMap<Integer,HashSet<Normal>>();
-    ArrayList<Float> verticesList = new ArrayList<>();
     float[] vertices;
     float[] normals;
-    /** 三角形面数 */
-    int faceNum = 0;
     AsyncTask<byte[], Integer, float[]> task;
     int totalLines = 0;
 
@@ -47,7 +44,6 @@ public class ObjObject extends ModelObject{
     public ObjObject(byte[] objByte, Context context, int drawMode, ModelLoaderListener listener) {
         this.modelType = "obj";
 
-        this.objByte = objByte;
         this.drawWay = drawMode;
         this.listener = listener;
         spendTime = System.currentTimeMillis();
@@ -218,7 +214,8 @@ public class ObjObject extends ModelObject{
             @Override
             protected void onProgressUpdate(Integer... values) {
                 float progress = (float) values[0] / (float) totalLines;
-                listener.loadedUpdate(progress);
+                DecimalFormat df = new DecimalFormat("#.00");
+                listener.loadedUpdate(Float.valueOf(df.format(progress)));
             }
 
             @Override

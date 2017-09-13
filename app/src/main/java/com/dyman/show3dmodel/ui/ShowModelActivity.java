@@ -132,7 +132,9 @@ public class ShowModelActivity extends BaseActivity {
 
             @Override
             public void loadedFinish(ModelObject modelObject) {
-                sModelView.setModelObject(modelObject);
+                if (modelObject != null) {
+                    sModelView.setModelObject(modelObject);
+                }
             }
 
             @Override
