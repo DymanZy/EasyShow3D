@@ -198,7 +198,7 @@ public class MainActivity extends BaseActivity{
         if (file.length()>10*1024*1024) {
             ToastUtils.showLong(MainActivity.this, getString(R.string.tip_file_maybe_analysis_fail));
         }
-        Intent it = new Intent(MainActivity.this, ModuleTestActivity.class);
+        Intent it = new Intent(MainActivity.this, ShowModelActivity.class);
 //        Intent it = new Intent(MainActivity.this, ShowModelActivity.class);
         it.putExtra("filePath", file.getAbsolutePath());
         startActivity(it);
