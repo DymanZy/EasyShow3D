@@ -6,6 +6,10 @@
 这是一个浏览3D 模型的 APP,  基于OpenGLES 2.0进行开发，目前支持的3D模型格式有OBJ、STL和3DS 等格式的3D模型文件,  暂不支持 stp、igs 、dwg 等格式，如有这方面的解决方法，请多多指教。
 目前在尝试使用多线程解析OBJ模型，但整体效果并不算很好，仍在开发过程中。
 
+[传送门](apk/Show3D-v1.6.apk)
+
+<a href="art/00.jpeg"><img src="art/QRcode.png" width="30%"/></a>
+
 ## Screenshots
 
 <a href="art/00.jpeg"><img src="art/00.png" width="30%"/></a> <a href="art/01.jpeg"><img src="art/01.png" width="30%"/></a> <a href="art/02.jpeg"><img src="art/02.png" width="30%"/></a>
