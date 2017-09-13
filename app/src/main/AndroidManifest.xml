@@ -33,17 +33,10 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".ui.ShowModelActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity
             android:name=".ui.AboutActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".ui.TestActivity"
-                  android:theme="@style/AppTheme.NoActionBar" >
-        </activity>
-        <activity android:name=".ui.ModuleTestActivity"
+        <activity android:name=".ui.ShowModelActivity"
                   android:theme="@style/AppTheme.NoActionBar" >
         </activity>
     </application>
