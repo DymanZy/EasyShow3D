@@ -268,4 +268,16 @@ public class StlObject extends ModelObject {
         return true;
     }
 
+
+    public void cancelTask() {
+        if (task != null && !task.isCancelled()) {
+            if (task.cancel(true)) {
+                Log.e(TAG, "model's analysis task already cancel!");
+                if (listener != null) {
+                    listener.loaderCancel();
+                }
+            }
+        }
+    }
+
 }

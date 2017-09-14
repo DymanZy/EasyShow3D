@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.opengl.GLES20;
+import android.util.Log;
 
 
 import com.dyman.easyshow3d.R;
@@ -19,6 +20,8 @@ import java.nio.FloatBuffer;
  * Created by dyman on 16/7/25.
  */
 public class ModelObject {
+
+    private static final String TAG = "ModelObject";
 
     public static final int DRAW_MODEL = 0;//画基础模型
     public static final int DRAW_PROGRESS = 1;//画带进度的模型
@@ -255,6 +258,9 @@ public class ModelObject {
         result.put(a);
         result.position(0);
         return result;
+    }
+
+    public void cancelTask() {
     }
 
 }

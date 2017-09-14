@@ -12,4 +12,6 @@ public interface ModelLoaderListener {
     void loadedFinish(ModelObject modelObject);
 
     void loaderCancel();
+
+    void loaderFailure();
 }

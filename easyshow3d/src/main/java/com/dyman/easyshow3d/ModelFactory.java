@@ -22,6 +22,7 @@ public class ModelFactory {
 
     private static byte[] modelBytes = null;
     private static String modelType;
+    private static ModelObject modelObject;
 
     public static void decodeFile(Context context, String filePath, ModelLoaderListener listener) {
 
@@ -38,10 +39,11 @@ public class ModelFactory {
         }
 
         if (modelBytes == null) {
-            Log.e(TAG, "decode model file failure!");
+            listener.loaderFailure();
+            return;
         }
 
-        decodeByteArray(context, modelBytes, listener);
+        modelObject = decodeByteArray(context, modelBytes, listener);
     }
 
 
@@ -55,11 +57,22 @@ public class ModelFactory {
             modelObject = new StlObject(data, context, ModelObject.DRAW_MODEL, listener);
         } else if (modelType.equals("3ds")) {
             Log.e(TAG, " can't handle 3ds model");
+            listener.loaderFailure();
         } else {
             Log.e(TAG, "model type error!");
+            listener.loaderFailure();
         }
 
         return modelObject;
+    }
+
+
+    public static void cancelDecode() {
+        if (modelObject != null) {
+            modelObject.cancelTask();
+        } else {
+            throw new NullPointerException("ModelObject was null, can't call cancelDecode()! please call decodeFile() first.");
+        }
     }
 
 
