@@ -1,6 +1,8 @@
 package com.dyman.show3dmodel.ui;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ public class ShowModelActivity extends BaseActivity {
     private static final String TAG = "ShowModelActivity";
     private ShowModelView sModelView;
     private String filePath;
+    private ProgressDialog dialog;
 
 
     @Override
@@ -38,7 +41,7 @@ public class ShowModelActivity extends BaseActivity {
 
         initToolBar();
         initView();
-        isHaveFile(filePath);
+        isExist(filePath);
     }
 
 
@@ -72,6 +75,19 @@ public class ShowModelActivity extends BaseActivity {
 
     private void initView() {
         sModelView = (ShowModelView) findViewById(R.id.showModelView);
+
+        dialog = new ProgressDialog(this);
+        dialog.setMessage(getString(R.string.model_load_progress_title));
+        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        dialog.setIndeterminate(false);
+        dialog.setCancelable(false);
+        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ModelFactory.cancelDecode();
+            }
+        });
+        dialog.setMax(100);
     }
 
 
@@ -80,7 +96,7 @@ public class ShowModelActivity extends BaseActivity {
      *
      * @param filePath
      */
-    private void isHaveFile(String filePath) {
+    private void isExist(String filePath) {
         if (filePath != null && !filePath.equals("")) {
             loadModel(filePath);
         } else {
@@ -124,22 +140,34 @@ public class ShowModelActivity extends BaseActivity {
 
 
     private void loadModel(String filePath) {
+        dialog.show();
         ModelFactory.decodeFile(ShowModelActivity.this, filePath, new ModelLoaderListener() {
             @Override
             public void loadedUpdate(float progress) {
-                Log.i(TAG, "模型解析进度： " + progress);
+                dialog.setProgress((int) (progress * 100));
             }
 
             @Override
             public void loadedFinish(ModelObject modelObject) {
                 if (modelObject != null) {
                     sModelView.setModelObject(modelObject);
+                    dialog.dismiss();
                 }
             }
 
             @Override
             public void loaderCancel() {
+                Log.i(TAG, "loaderCancel() was be called!");
+                ToastUtils.showShort(ShowModelActivity.this, "已取消");
+                dialog.dismiss();
+                finish();
+            }
 
+            @Override
+            public void loaderFailure() {
+                Log.e(TAG, "decode model file failure!");
+                ToastUtils.showShort(ShowModelActivity.this, "模型解析失败");
+                dialog.dismiss();
             }
         });
     }

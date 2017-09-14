@@ -4,9 +4,11 @@
     <string name="frequently_used">常用</string>
     <string name="action_settings">设置</string>
     <string name="action_about">关于</string>
+    <string name="sure">确认</string>
+    <string name="cancel">取消</string>
 
     <string name="stl_load_progress_message">请等一会.</string>
-    <string name="stl_load_progress_title">STL 文件加载中...</string>
+    <string name="model_load_progress_title">文件加载中, 请稍后</string>
     <string name="error_fetch_data">STL 文件解析失败.</string>
     <string name="error_outbig"> 文件过大，解析失败！</string>
     <string name="close_dialog">关闭对话框</string>
