@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import static com.dyman.easyshow3d.utils.LoadUtil.getCrossProduct;
+import static com.dyman.easyshow3d.utils.LoadUtil.vectorNormal;
+
 /**
  * Created by dyman on 16/7/25.
  */
@@ -46,9 +49,7 @@ public class ObjObject extends ModelObject{
 
         this.drawWay = drawMode;
         this.listener = listener;
-        spendTime = System.currentTimeMillis();
-        processOBJ(objByte, context);
-
+        parseModel(objByte, context);
     }
 
 
@@ -57,10 +58,10 @@ public class ObjObject extends ModelObject{
      * @param vertices
      * @param normals
      */
-    public void initVertexData(float[] vertices,float[] normals) {
+    @Override
+    public void initVertexData(float[] vertices, float[] normals) {
         //顶点坐标数据的初始化================begin============================
         vCount=vertices.length/3;
-
 
         //创建顶点坐标数据缓冲
         //vertices.length*4是因为一个整数四个字节
@@ -73,7 +74,6 @@ public class ObjObject extends ModelObject{
         //转换，关键是要通过ByteOrder设置nativeOrder()，否则有可能会出问题
         //顶点坐标数据的初始化================end============================
 
-
         //顶点法向量数据的初始化================begin============================
         ByteBuffer cbb = ByteBuffer.allocateDirect(normals.length*4);
         cbb.order(ByteOrder.nativeOrder());//设置字节顺序
@@ -85,36 +85,13 @@ public class ObjObject extends ModelObject{
         //顶点着色数据的初始化================end============================
     }
 
-
-    /**
-     * 求两个向量的叉积
-     */
-    public static float[] getCrossProduct(float x1,float y1,float z1,float x2,float y2,float z2) {
-        //求出两个矢量叉积矢量在XYZ轴的分量ABC
-        float A=y1*z2-y2*z1;
-        float B=z1*x2-z2*x1;
-        float C=x1*y2-x2*y1;
-
-        return new float[]{A,B,C};
-    }
-
-
-    /**
-     *  向量规格化
-     */
-    public static float[] vectorNormal(float[] vector) {
-        //求向量的模
-        float module=(float)Math.sqrt(vector[0]*vector[0]+vector[1]*vector[1]+vector[2]*vector[2]);
-        return new float[]{vector[0]/module,vector[1]/module,vector[2]/module};
-    }
-
-
     /**
      *  解析obj模型
-     * @param objBytes
+     * @param data
      * @param context
      */
-    private boolean processOBJ(byte[] objBytes, final Context context){
+    @Override
+    public void parseModel(byte[] data, Context context) {
 
         alv = new ArrayList<Float>();
         alFaceIndex = new ArrayList<Integer>();
@@ -247,15 +224,14 @@ public class ObjObject extends ModelObject{
         };
 
         try{
-            task.execute(objBytes);
+            task.execute(data);
         } catch (Exception e){
-            return false;
+            e.printStackTrace();
         }
-
-        return true;
     }
 
 
+    @Override
     public void cancelTask() {
         if (task != null && !task.isCancelled()) {
             if (task.cancel(true)) {
@@ -266,5 +242,4 @@ public class ObjObject extends ModelObject{
             }
         }
     }
-
 }

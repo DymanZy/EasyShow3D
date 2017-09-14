@@ -19,7 +19,14 @@ import java.nio.FloatBuffer;
 /**
  * Created by dyman on 16/7/25.
  */
-public class ModelObject {
+public abstract class ModelObject {
+
+
+    public abstract void parseModel(byte[] data, Context context);
+
+    public abstract void initVertexData(float[] vertices, float[] normals);
+
+    public abstract void cancelTask();
 
     private static final String TAG = "ModelObject";
 
@@ -61,8 +68,6 @@ public class ModelObject {
     FloatBuffer mVertexBuffer;//顶点坐标数据缓冲
     FloatBuffer   mNormalBuffer;//顶点法向量数据缓冲
     int vCount=0;
-
-    public long spendTime;
 
 
     /**
@@ -260,7 +265,10 @@ public class ModelObject {
         return result;
     }
 
-    public void cancelTask() {
+
+
+    private void test() {
+
     }
 
 }
