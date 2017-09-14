@@ -33,7 +33,7 @@ allprojects {
 
 ```java
 dependencies {
-  compile 'com.github.DymanZy:EasyShow3D:1.1'
+  compile 'com.github.DymanZy:EasyShow3D:1.2'
 }
 ```
 
@@ -60,13 +60,17 @@ ModelFactory.decodeFile(ShowModelActivity.this, filePath, new ModelLoaderListene
   @Override
   public void loadedFinish(ModelObject modelObject) {
     if (modelObject != null) {
-      //	解析完成，显示模型
+      //  解析完成，显示模型
       showModelView.setModelObject(modelObject);
     }
   }
 
   @Override
   public void loaderCancel() {
+  }
+  
+  @Override
+  public void loaderFailure() {
   }
 });
 ```
