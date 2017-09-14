@@ -107,6 +107,11 @@ public class ObjObject extends ModelObject{
                 totalLines = objLines.length;
 
                 for (int i = 0, len = totalLines; i < len; i++){
+                    
+                    if(isCancelled()){
+                        break;
+                    }
+                    
                     String line = objLines[i];
                     String[] tempsa = line.split("[ ]+");
                     if (tempsa[0].trim().equals("v")){  //此为顶点坐标
@@ -190,7 +195,13 @@ public class ObjObject extends ModelObject{
 
             @Override
             protected void onProgressUpdate(Integer... values) {
+
+                if(isCancelled()){
+                    return;
+                }
+
                 float progress = (float) values[0] / (float) totalLines;
+                Log.i(TAG, "onProgressUpdate: --------    progress="+progress);
                 DecimalFormat df = new DecimalFormat("#.00");
                 listener.loadedUpdate(Float.valueOf(df.format(progress)));
             }

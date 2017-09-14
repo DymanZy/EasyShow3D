@@ -77,9 +77,9 @@ public class BaseBuilderObject {
      */
     public void initShader(ModelView modelView) {
         //加载顶点着色器的脚本内容
-        mVertexShader= ShaderUtil.loadFromAssetsFile("vertex.sh", modelView.getResources());
+        mVertexShader= ShaderUtil.loadFromAssetsFile("easy_show_vertex.sh", modelView.getResources());
         //加载片元着色器的脚本内容
-        mFragmentShader=ShaderUtil.loadFromAssetsFile("frag_color.sh", modelView.getResources());
+        mFragmentShader=ShaderUtil.loadFromAssetsFile("easy_show_frag_color.sh", modelView.getResources());
         //基于顶点着色器与片元着色器创建程序
         mProgram = ShaderUtil.createProgram(mVertexShader, mFragmentShader);
         //获取程序中顶点位置属性引用

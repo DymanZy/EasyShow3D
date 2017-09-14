@@ -1,20 +1,14 @@
 package com.dyman.easyshow3d.bean;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.opengl.GLES20;
-import android.util.Log;
 
 
-import com.dyman.easyshow3d.R;
 import com.dyman.easyshow3d.utils.LoadUtil;
 import com.dyman.easyshow3d.utils.MatrixState;
 import com.dyman.easyshow3d.utils.ShaderUtil;
 import com.dyman.easyshow3d.view.ModelView;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 /**
@@ -105,9 +99,9 @@ public abstract class ModelObject {
      */
     public void initShader(ModelView objView) {
         //加载顶点着色器的脚本内容
-        mVertexShader= ShaderUtil.loadFromAssetsFile("vertex.sh", objView.getResources());
+        mVertexShader= ShaderUtil.loadFromAssetsFile("easy_show_vertex.sh", objView.getResources());
         //加载片元着色器的脚本内容
-        mFragmentShader=ShaderUtil.loadFromAssetsFile("frag_color.sh", objView.getResources());
+        mFragmentShader=ShaderUtil.loadFromAssetsFile("easy_show_frag_color.sh", objView.getResources());
         //基于顶点着色器与片元着色器创建程序
         mProgram = ShaderUtil.createProgram(mVertexShader, mFragmentShader);
         //获取程序中顶点位置属性引用
@@ -133,9 +127,9 @@ public abstract class ModelObject {
      */
     public void initShaderWithClipPlane(ModelView objView) {
         //加载顶点着色器的脚本内容
-        mVertexShader= ShaderUtil.loadFromAssetsFile("vertex_clipplane.sh", objView.getResources());
+        mVertexShader = ShaderUtil.loadFromAssetsFile("easy_show_vertex_clipplane.sh", objView.getResources());
         //加载片元着色器的脚本内容
-        mFragmentShader=ShaderUtil.loadFromAssetsFile("frag_clipplane.sh", objView.getResources());
+        mFragmentShader = ShaderUtil.loadFromAssetsFile("easy_show_frag_clipplane.sh", objView.getResources());
         //基于顶点着色器与片元着色器创建程序
         mProgram = ShaderUtil.createProgram(mVertexShader, mFragmentShader);
         //获取程序中顶点位置属性引用
