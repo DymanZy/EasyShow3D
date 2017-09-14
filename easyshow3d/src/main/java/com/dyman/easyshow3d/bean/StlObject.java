@@ -17,6 +17,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.dyman.easyshow3d.utils.LoadUtil.adjust_coordinate;
+
 /**
  * Created by dyman on 16/7/25.
  */
@@ -35,6 +37,7 @@ public class StlObject extends ModelObject {
     private AsyncTask<byte[], Integer, float[]> task;
     private int totalLines = 0;
 
+
     public StlObject(byte[] stlBytes, Context context, int drawMode, ModelLoaderListener listener) {
         this.modelType = "stl";
 
@@ -43,6 +46,7 @@ public class StlObject extends ModelObject {
         this.drawWay = drawMode;
         parseModel(stlBytes, context);
     }
+
 
     /**
      * 初始化顶点坐标和着色数据的方法
@@ -68,7 +72,6 @@ public class StlObject extends ModelObject {
             adjust_coordinate(vertices,i*3+2,center_z);
         }
 
-
         ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length * 4);//操作系统直接分配Buffer,访问速度更快
         vbb.order(ByteOrder.nativeOrder());//统一根据设备设置ByteOrder
         mVertexBuffer = vbb.asFloatBuffer();
@@ -76,6 +79,7 @@ public class StlObject extends ModelObject {
         mVertexBuffer.position(0);//游标回置
 
     }
+
 
     /**
      *  读出模型的三角面片个数
@@ -88,7 +92,8 @@ public class StlObject extends ModelObject {
         return (0xff & stlBytes[offset]) | ((0xff & stlBytes[offset + 1]) << 8) | ((0xff & stlBytes[offset + 2]) << 16) | ((0xff & stlBytes[offset + 3]) << 24);
     }
 
-    boolean isText(byte[] bytes) {
+
+    private boolean isText(byte[] bytes) {
         for (byte b : bytes) {
             if (b == 0x0a || b == 0x0d || b == 0x09) {//对应 回车键 和 tab键
                 // white spaces
@@ -100,16 +105,6 @@ public class StlObject extends ModelObject {
             }
         }
         return true;
-    }
-
-
-    /**
-     * 矫正坐标  坐标圆心移动
-     * @param
-     * @param postion
-     */
-    private void adjust_coordinate(float[] vertex_array , int postion,float adjust){
-        vertex_array[postion]-=adjust;
     }
 
 

@@ -8,6 +8,7 @@ import android.util.Log;
 
 
 import com.dyman.easyshow3d.R;
+import com.dyman.easyshow3d.utils.LoadUtil;
 import com.dyman.easyshow3d.utils.MatrixState;
 import com.dyman.easyshow3d.utils.ShaderUtil;
 import com.dyman.easyshow3d.view.ModelView;
@@ -227,7 +228,7 @@ public abstract class ModelObject {
         //将摄像机位置传入着色器程序
         GLES20.glUniform3fv(maCameraHandle, 1, MatrixState.cameraFB);
         //将剪裁平面传入shader程序
-        GLES20.glUniform4fv(muClipHandle, 1, fromArrayToBuff(clipPlane));
+        GLES20.glUniform4fv(muClipHandle, 1, LoadUtil.fromArrayToBuff(clipPlane));
         // 将顶点位置数据传入渲染管线
         GLES20.glVertexAttribPointer
                 (
@@ -253,22 +254,6 @@ public abstract class ModelObject {
         GLES20.glEnableVertexAttribArray(maNormalHandle);
         //绘制加载的物体
         GLES20.glDrawArrays(drawMode, 0, vCount);
-    }
-
-
-    public FloatBuffer fromArrayToBuff(float[] a) {
-        ByteBuffer llbb = ByteBuffer.allocateDirect(a.length*4);
-        llbb.order(ByteOrder.nativeOrder());//设置字节顺序
-        FloatBuffer result=llbb.asFloatBuffer();
-        result.put(a);
-        result.position(0);
-        return result;
-    }
-
-
-
-    private void test() {
-
     }
 
 }
