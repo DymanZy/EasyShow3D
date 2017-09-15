@@ -22,7 +22,11 @@ import com.dyman.show3dmodel.config.MyConfig;
 import com.dyman.show3dmodel.utils.DialogUtils;
 import com.dyman.show3dmodel.utils.ToastUtils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class ShowModelActivity extends BaseActivity {
 
@@ -37,7 +41,6 @@ public class ShowModelActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_model);
         filePath = getIntent().getStringExtra("filePath");
-
 
         initToolBar();
         initView();
@@ -116,11 +119,6 @@ public class ShowModelActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_show_setting:
-                Dialog showDialog = DialogUtils.showSettingDialog(ShowModelActivity.this);
-                showDialog.show();
-                break;
-
             case R.id.menu_renderer_setting:
                 Dialog renderDialog = DialogUtils.renderSettingDialog(ShowModelActivity.this);
                 renderDialog.show();
@@ -140,6 +138,7 @@ public class ShowModelActivity extends BaseActivity {
 
 
     private void loadModel(String filePath) {
+
         dialog.show();
         ModelFactory.decodeFile(ShowModelActivity.this, filePath, new ModelLoaderListener() {
             @Override

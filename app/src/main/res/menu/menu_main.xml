@@ -8,15 +8,4 @@
         android:orderInCategory="100"
         android:title="@string/action_about"
         app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/action_smm"
-        android:title="多线程解析"
-        app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/action_normal"
-        android:title="常规解析"
-        app:showAsAction="never"/>
-
 </menu>

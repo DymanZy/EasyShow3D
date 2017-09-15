@@ -230,10 +230,6 @@ public class MainActivity extends BaseActivity{
             Intent it_about = new Intent(MainActivity.this, AboutActivity.class);
             startActivity(it_about);
             return true;
-        } else if (id == R.id.action_smm) {
-            new SharePreferenceManager(MainActivity.this).setAnalysisWay(true);
-        } else if (id == R.id.action_normal) {
-            new SharePreferenceManager(MainActivity.this).setAnalysisWay(false);
         }
         return super.onOptionsItemSelected(item);
     }
