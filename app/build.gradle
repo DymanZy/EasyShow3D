@@ -26,6 +26,12 @@ android {
         }
     }
 
+    android.applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(output.outputFile.parent, defaultConfig.applicationId + "-v" + defaultConfig.versionName + ".apk");
+        }
+    }
+
 }
 
 dependencies {
