@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -45,6 +46,7 @@ public class ShowModelActivity extends BaseActivity {
         initToolBar();
         initView();
         isExist(filePath);
+
     }
 
 

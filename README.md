@@ -8,7 +8,7 @@
 
 [传送门](https://www.pgyer.com/o4n9)
 
-<a href="art/00.jpeg"><img src="art/show3D_download_code.png" width="30%"/></a>
+<a href="art/00.jpeg"><img src="art/show3D_download_code.png" width="20%"/></a>
 
 ## Screenshots
 
