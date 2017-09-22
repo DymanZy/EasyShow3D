@@ -172,12 +172,12 @@ public abstract class ModelObject {
         // 将顶点位置数据传入渲染管线
         GLES20.glVertexAttribPointer
                 (
-                        maPositionHandle,
-                        3,
-                        GLES20.GL_FLOAT,
-                        false,
-                        3*4,
-                        mVertexBuffer
+                    maPositionHandle,
+                    3,
+                    GLES20.GL_FLOAT,
+                    false,
+                    3*4,
+                    mVertexBuffer
                 );
 
         //传入顶点颜色数据
@@ -186,12 +186,12 @@ public abstract class ModelObject {
         //将顶点法向量数据传入渲染管线
         GLES20.glVertexAttribPointer
                 (
-                        maNormalHandle,
-                        3,
-                        GLES20.GL_FLOAT,
-                        false,
-                        3*4,
-                        mNormalBuffer
+                    maNormalHandle,
+                    3,
+                    GLES20.GL_FLOAT,
+                    false,
+                    3*4,
+                    mNormalBuffer
                 );
         //启用顶点位置、法向量数据
         GLES20.glEnableVertexAttribArray(maPositionHandle);
@@ -226,22 +226,22 @@ public abstract class ModelObject {
         // 将顶点位置数据传入渲染管线
         GLES20.glVertexAttribPointer
                 (
-                        maPositionHandle,
-                        3,
-                        GLES20.GL_FLOAT,
-                        false,
-                        3*4,
-                        mVertexBuffer
+                    maPositionHandle,
+                    3,
+                    GLES20.GL_FLOAT,
+                    false,
+                    3*4,
+                    mVertexBuffer
                 );
         //将顶点法向量数据传入渲染管线
         GLES20.glVertexAttribPointer
                 (
-                        maNormalHandle,
-                        3,
-                        GLES20.GL_FLOAT,
-                        false,
-                        3*4,
-                        mNormalBuffer
+                    maNormalHandle,
+                    3,
+                    GLES20.GL_FLOAT,
+                    false,
+                    3*4,
+                    mNormalBuffer
                 );
         //启用顶点位置、法向量数据
         GLES20.glEnableVertexAttribArray(maPositionHandle);

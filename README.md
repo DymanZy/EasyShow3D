@@ -10,6 +10,8 @@
 
 <a href="art/00.jpeg"><img src="art/show3D_download_code.png" width="20%"/></a>
 
+这里提供两个[示例模型](model/)
+
 ## Screenshots
 
 <a href="art/00.jpeg"><img src="art/00.png" width="30%"/></a> <a href="art/01.jpeg"><img src="art/01.png" width="30%"/></a> <a href="art/05.jpeg"><img src="art/05.png" width="30%"/></a>
