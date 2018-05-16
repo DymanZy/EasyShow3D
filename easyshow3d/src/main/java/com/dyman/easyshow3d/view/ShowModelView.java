@@ -68,7 +68,6 @@ public class ShowModelView extends ModelView{
                 break;
 
             case MotionEvent.ACTION_POINTER_UP:
-                Log.e(TAG, "onTouchEvent: 手指拿起");
                 if (touchMode == TOUCH_ZOOM){
                     touchMode = TOUCH_NONE;
                     previousScale = wholeScale;//记录缩放倍数

@@ -21,6 +21,8 @@ import com.dyman.easyshow3d.view.ShowModelView;
 import com.dyman.show3dmodel.R;
 import com.dyman.show3dmodel.config.MyConfig;
 import com.dyman.show3dmodel.utils.DialogUtils;
+import com.dyman.show3dmodel.utils.FileUtils;
+import com.dyman.show3dmodel.utils.TimeUtils;
 import com.dyman.show3dmodel.utils.ToastUtils;
 
 import java.io.BufferedReader;
@@ -139,10 +141,16 @@ public class ShowModelActivity extends BaseActivity {
     }
 
 
+    long loadTime = 0;
     private void loadModel(String filePath) {
 
         dialog.show();
         ModelFactory.decodeFile(ShowModelActivity.this, filePath, new ModelLoaderListener() {
+            @Override
+            public void loadBegin() {
+                loadTime = System.currentTimeMillis();
+            }
+
             @Override
             public void loadedUpdate(float progress) {
                 dialog.setProgress((int) (progress * 100));
@@ -153,6 +161,10 @@ public class ShowModelActivity extends BaseActivity {
                 if (modelObject != null) {
                     sModelView.setModelObject(modelObject);
                     dialog.dismiss();
+
+                    Log.e(TAG, FileUtils.getName(filePath) +
+                            " time：" + TimeUtils.timeTransfer(System.currentTimeMillis() - loadTime) +
+                            " size：" + FileUtils.fileSizeTransfer(FileUtils.getSize(filePath)));
                 }
             }
 

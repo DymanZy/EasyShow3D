@@ -7,6 +7,9 @@ import com.dyman.easyshow3d.bean.ModelObject;
  */
 
 public interface ModelLoaderListener {
+
+    void loadBegin();
+
     void loadedUpdate(float progress);
 
     void loadedFinish(ModelObject modelObject);

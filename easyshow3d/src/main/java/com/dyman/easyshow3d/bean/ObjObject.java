@@ -61,7 +61,6 @@ public class ObjObject extends ModelObject{
     @Override
     public void initVertexData(float[] vertices, float[] normals) {
 
-        Log.i(TAG, "initVertexData:     vertices.size = "+vertices.length +"    normals = "+normals.length);
         //顶点坐标数据的初始化================begin============================
         vCount=vertices.length/3;
 
@@ -103,6 +102,7 @@ public class ObjObject extends ModelObject{
         task = new AsyncTask<byte[], Integer, float[]>() {
             @Override
             protected float[] doInBackground(byte[]... objBytes) {
+                listener.loadBegin();
 
                 String objText = new String(objBytes[0]);
                 String[] objLines = objText.split("\n");
@@ -135,7 +135,6 @@ public class ObjObject extends ModelObject{
 
                 return new float[0];
             }
-
 
             private void putPointAndFace(String[] tempsa) {
                 if (tempsa[0].trim().equals("v")){  //此为顶点坐标
@@ -219,7 +218,6 @@ public class ObjObject extends ModelObject{
                 }
 
                 float progress = (float) values[0] / (float) totalLines;
-                Log.i(TAG, "onProgressUpdate: --------    progress="+progress);
                 DecimalFormat df = new DecimalFormat("#.00");
                 listener.loadedUpdate(Float.valueOf(df.format(progress)));
             }

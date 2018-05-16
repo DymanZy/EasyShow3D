@@ -115,6 +115,8 @@ public class StlObject extends ModelObject {
      */
     @Override
     public void parseModel(byte[] data, final Context context) {
+        listener.loadBegin();
+
         maxX = Float.MIN_VALUE;
         maxY = Float.MIN_VALUE;
         maxZ = Float.MIN_VALUE;
