@@ -21,7 +21,7 @@ public class FaceThread extends Thread {
     /** 定义解析的结束点 */
     private int end;
     /** obj文件的数据 */
-    private ArrayList<String> fLines;
+    private ArrayList<String[]> fLines;
     /** 当前线程的ID */
     private int threadID;
     /** 解析完成的回调 */
@@ -43,7 +43,7 @@ public class FaceThread extends Thread {
     private boolean isFinish = false;
 
 
-    public FaceThread(int threadID, ArrayList<String> fLines, int start, int end, float[] alv, ObjProObject
+    public FaceThread(int threadID, ArrayList<String[]> fLines, int start, int end, float[] alv, ObjProObject
             objModel, IAnalysisFinishCallback finishCallback) {
         this.threadID = threadID;
         this.fLines = fLines;
@@ -61,8 +61,7 @@ public class FaceThread extends Thread {
         ArrayList<Float> normalsList = new ArrayList<>();
 
         for (int i = start; i < end; i++) {
-            String line = fLines.get(i);
-            String[] tempsa = line.split("[ ]+");
+            String[] tempsa = fLines.get(i);
             if (tempsa[0].trim().equals("f")) {
                 int[] index = new int[3];
 

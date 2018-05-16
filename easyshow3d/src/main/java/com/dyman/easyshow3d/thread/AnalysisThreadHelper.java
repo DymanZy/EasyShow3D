@@ -15,11 +15,11 @@ public class AnalysisThreadHelper {
     /** 解析顶点数据的线程组 */
     private VerticesThread[] vThreads;
     /** 待处理的顶点数据 */
-    private ArrayList<String> vLines = new ArrayList<>();
+    private ArrayList<String[]> vLines = new ArrayList<>();
     /** 解析面数据的线程组 */
     private FaceThread[] fThreads;
     /** 待处理的面数据 */
-    private ArrayList<String> fLines = new ArrayList<>();
+    private ArrayList<String[]> fLines = new ArrayList<>();
 
     private float[] alv;
     private float[] vertices;
@@ -53,19 +53,21 @@ public class AnalysisThreadHelper {
         listener.loadBegin();
         vLineNum = 0;
         fLineNum = 0;
+        String line;
+        String[] tempsa, tempsa1;
 
         // 1. 先将原数据处理分为顶点数据和面数据（这里很耗时间）
         String objText = new String(objByte);
         String[] objLines = objText.split("\n");
         for (int i = 0, len = objLines.length; i < len; i++) {
-            String line = objLines[i];
-            String[] tempsa = line.split("[ ]+");
-            if (tempsa[0].trim().equals("v")) {
-                vLineNum++;
-                vLines.add(line);
-            } else if (tempsa[0].trim().equals("f")) {
-                fLineNum++;
-                fLines.add(line);
+            line = objLines[i];
+            tempsa = line.split("[ ]+");
+            if (tempsa.length > 4 && !tempsa[4].trim().equals("")) {
+                pushModelData(tempsa);
+                tempsa1 = new String[] {tempsa[0], tempsa[1], tempsa[3], tempsa[4]};
+                pushModelData(tempsa1);
+            } else {
+                pushModelData(tempsa);
             }
         }
         alv = new float[vLineNum*3];
@@ -83,6 +85,15 @@ public class AnalysisThreadHelper {
         }
     }
 
+    private void pushModelData(String[] tempsa) {
+        if (tempsa[0].trim().equals("v")) {
+            vLineNum++;
+            vLines.add(tempsa);
+        } else if (tempsa[0].trim().equals("f")) {
+            fLineNum++;
+            fLines.add(tempsa);
+        }
+    }
 
     /**
      *  解析结果的回调，分顶点解析的回调和面解析的回调

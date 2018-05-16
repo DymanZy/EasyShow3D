@@ -14,7 +14,7 @@ public class VerticesThread extends Thread {
     /** 定义解析的结束点 */
     private int end;
     /** obj文件的数据 */
-    private ArrayList<String> vLines;
+    private ArrayList<String[]> vLines;
     /** 当前线程的ID */
     private int threadID;
     /** 解析完成的回调 */
@@ -23,7 +23,7 @@ public class VerticesThread extends Thread {
     private boolean isFinish = false;
 
 
-    public VerticesThread(int threadID, ArrayList<String> vLines, int start, int end, IAnalysisFinishCallback finishCallback) {
+    public VerticesThread(int threadID, ArrayList<String[]> vLines, int start, int end, IAnalysisFinishCallback finishCallback) {
         this.threadID = threadID;
         this.vLines = vLines;
         this.start = start;
@@ -38,8 +38,7 @@ public class VerticesThread extends Thread {
         ArrayList<Float> alv = new ArrayList<>();
 
         for (int i = start; i < end; i++) {
-            String line = vLines.get(i);
-            String[] tempsa = line.split("[ ]+");
+            String[] tempsa = vLines.get(i);
             if (tempsa[0].trim().equals("v")) {
                 alv.add(Float.parseFloat(tempsa[1]));
                 alv.add(Float.parseFloat(tempsa[2]));
