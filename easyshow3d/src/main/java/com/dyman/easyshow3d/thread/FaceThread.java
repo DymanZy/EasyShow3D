@@ -31,19 +31,16 @@ public class FaceThread extends Thread {
     private ObjProObject objModel;
 
     //顶点组装面索引列表--根据面的信息从文件中加载
-    private ArrayList<Integer> alFaceIndex=new ArrayList<Integer>();
-    //结果顶点坐标列表--按面组织好
-    private ArrayList<Float> alvResult=new ArrayList<Float>();
+    private ArrayList<Integer> alFaceIndex=new ArrayList<>();
     //平均前各个索引对应的点的法向量集合Map
     //此HashMap的key为点的索引， value为点所在的各个面的法向量的集合
-    private HashMap<Integer,HashSet<Normal>> hmn=new HashMap<Integer,HashSet<Normal>>();
+    private HashMap<Integer,HashSet<Normal>> hmn=new HashMap<>();
 
-
-    private long beginTime;
     private boolean isFinish = false;
+    private float[] vertices, normals;
 
 
-    public FaceThread(int threadID, ArrayList<String[]> fLines, int start, int end, float[] alv, ObjProObject
+    public FaceThread(int threadID, ArrayList<String[]> fLines, float[] vertices, float[] normals, int start, int end, float[] alv, ObjProObject
             objModel, IAnalysisFinishCallback finishCallback) {
         this.threadID = threadID;
         this.fLines = fLines;
@@ -52,7 +49,8 @@ public class FaceThread extends Thread {
         this.alv = alv;
         this.finishCallback = finishCallback;
         this.objModel = objModel;
-        this.beginTime = System.currentTimeMillis();
+        this.vertices = vertices;
+        this.normals = normals;
     }
 
 
@@ -70,9 +68,9 @@ public class FaceThread extends Thread {
                 float x0=alv[3*index[0]];
                 float y0=alv[3*index[0]+1];
                 float z0=alv[3*index[0]+2];
-                alvResult.add(x0);
-                alvResult.add(y0);
-                alvResult.add(z0);
+                vertices[i * 9 + 0] = x0;
+                vertices[i * 9 + 1] = y0;
+                vertices[i * 9 + 2] = z0;
                 objModel.adjustMaxMin(x0, y0, z0);
 
                 //计算第1个顶点的索引，并获取此顶点的XYZ三个坐标
@@ -80,9 +78,9 @@ public class FaceThread extends Thread {
                 float x1=alv[3*index[1]];
                 float y1=alv[3*index[1]+1];
                 float z1=alv[3*index[1]+2];
-                alvResult.add(x1);
-                alvResult.add(y1);
-                alvResult.add(z1);
+                vertices[i * 9 + 3] = x1;
+                vertices[i * 9 + 4] = y1;
+                vertices[i * 9 + 5] = z1;
                 objModel.adjustMaxMin(x1, y1, z1);
 
                 //计算第2个顶点的索引，并获取此顶点的XYZ三个坐标
@@ -90,9 +88,9 @@ public class FaceThread extends Thread {
                 float x2=alv[3*index[2]];
                 float y2=alv[3*index[2]+1];
                 float z2=alv[3*index[2]+2];
-                alvResult.add(x2);
-                alvResult.add(y2);
-                alvResult.add(z2);
+                vertices[i * 9 + 6] = x2;
+                vertices[i * 9 + 7] = y2;
+                vertices[i * 9 + 8] = z2;
                 objModel.adjustMaxMin(x2, y2, z2);
 
                 //记录此面的顶点索引
@@ -118,7 +116,7 @@ public class FaceThread extends Thread {
                     //获取当前索引对应点的法向量集合
                     HashSet<Normal> hsn=hmn.get(tempInxex);
                     if(hsn==null) {//若集合不存在则创建
-                        hsn=new HashSet<Normal>();
+                        hsn=new HashSet<>();
                     }
                     //将此点的法向量添加到集合中
                     //由于Normal类重写了equals方法，因此同样的法向量不会重复出现在此点
@@ -135,23 +133,22 @@ public class FaceThread extends Thread {
         }
 
 
-        //生成顶点数组
-//        alvResult
-
-
         //生成法向量数组
-        for(Integer i:alFaceIndex) {
+        for (int i = 0; i < alFaceIndex.size(); i++) {
+            int index = alFaceIndex.get(i);
             //根据当前点的索引从Map中取出一个法向量的集合
-            HashSet<Normal> hsn=hmn.get(i);
+            HashSet<Normal> hsn = hmn.get(index);
             //求出平均法向量
-            float[] tn=Normal.getAverage(hsn);
+            float[] tn = Normal.getAverage(hsn);
             //将计算出的平均法向量存放到法向量数组中
-            normalsList.add(tn[0]);
-            normalsList.add(tn[1]);
-            normalsList.add(tn[2]);
+            normals[start * 9 + i * 3 + 0] = tn[0];
+            normals[start * 9 + i * 3 + 1] = tn[1];
+            normals[start * 9 + i * 3 + 2] = tn[2];
         }
+
         isFinish = true;
-        finishCallback.alvFaceFinish(threadID, start, alvResult, normalsList);
+        finishCallback.alvFaceFinish();
+
     }
 
 

@@ -80,9 +80,9 @@ public class AnalysisThreadHelper {
         int vAveLength = vLineNum/3;
         for (int i = 0; i < threadNum; i++) {
             if (i == (threadNum-1)) {
-                vThreads[i] = new VerticesThread(i, vLines, i*vAveLength, vLineNum, finishCallback);
+                vThreads[i] = new VerticesThread(i, vLines, alv, i*vAveLength, vLineNum, finishCallback);
             } else {
-                vThreads[i] = new VerticesThread(i, vLines, i*vAveLength, (i+1)*vAveLength-1, finishCallback);
+                vThreads[i] = new VerticesThread(i, vLines, alv, i*vAveLength, (i+1)*vAveLength-1, finishCallback);
             }
             vThreads[i].start();
         }
@@ -138,10 +138,8 @@ public class AnalysisThreadHelper {
         }
 
         @Override
-        public void alvFinish(int threadID, int index, ArrayList<Float> alvList) {
-            for (int i = 0, len = alvList.size(); i<len; i++) {
-                alv[index*3 + i] = alvList.get(i);
-            }
+        public void alvFinish() {
+
             if (vThreadAllFinish()) {
                 //顶点解析完成， 开始解析三角面
 
@@ -149,10 +147,10 @@ public class AnalysisThreadHelper {
                 int fAveLength = fLineNum/3;
                 for (int i = 0; i < threadNum; i++) {
                     if (i == (threadNum-1)) {
-                        fThreads[i] = new FaceThread(i, fLines, i*fAveLength, fLineNum,
+                        fThreads[i] = new FaceThread(i, fLines, vertices, normals, i*fAveLength, fLineNum,
                                 alv, objModel, finishCallback);
                     } else {
-                        fThreads[i] = new FaceThread(i, fLines, i*fAveLength, (i+1)*fAveLength-1,
+                        fThreads[i] = new FaceThread(i, fLines, vertices, normals, i*fAveLength, (i+1)*fAveLength-1,
                                 alv, objModel, finishCallback);
                     }
                     fThreads[i].start();
@@ -161,16 +159,7 @@ public class AnalysisThreadHelper {
         }
 
         @Override
-        public void alvFaceFinish(int threadID, int index, ArrayList<Float> verticeList, ArrayList<Float> normalsList) {
-
-            for (int i = 0, len = normalsList.size(); i<len; i++) {
-                normals[index*9 + i] = normalsList.get(i);
-            }
-
-            for (int i = 0, len = verticeList.size(); i<len; i++) {
-                vertices[index*9 + i] = verticeList.get(i);
-            }
-
+        public void alvFaceFinish() {
 
             if (fThreadAllFinish()) {
                 // 全部解析完成, 返回verticesList和faceList
