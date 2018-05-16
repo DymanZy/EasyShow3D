@@ -145,7 +145,7 @@ public class ShowModelActivity extends BaseActivity {
     private void loadModel(String filePath) {
 
         dialog.show();
-        ModelFactory.decodeFile(ShowModelActivity.this, filePath, new ModelLoaderListener() {
+        ModelFactory.decodeFile(ShowModelActivity.this, filePath, true, new ModelLoaderListener() {
             @Override
             public void loadBegin() {
                 loadTime = System.currentTimeMillis();

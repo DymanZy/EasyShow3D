@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.dyman.easyshow3d.bean.ModelObject;
 import com.dyman.easyshow3d.bean.ObjObject;
+import com.dyman.easyshow3d.bean.ObjProObject;
 import com.dyman.easyshow3d.bean.StlObject;
 import com.dyman.easyshow3d.imp.ModelLoaderListener;
 import com.dyman.easyshow3d.utils.FileUtils;
@@ -24,7 +25,7 @@ public class ModelFactory {
     private static String modelType;
     private static ModelObject modelObject;
 
-    public static void decodeFile(Context context, String filePath, ModelLoaderListener listener) {
+    public static void decodeFile(Context context, String filePath, boolean isMulti, ModelLoaderListener listener) {
 
         if (FileUtils.isNullString(filePath)) {
             throw new IllegalArgumentException("filePath can't be null!");
@@ -43,16 +44,19 @@ public class ModelFactory {
             return;
         }
 
-        modelObject = decodeByteArray(context, modelBytes, listener);
+        modelObject = decodeByteArray(context, modelBytes, isMulti, listener);
     }
 
 
-    private static ModelObject decodeByteArray(Context context, byte[] data, ModelLoaderListener listener) {
+    private static ModelObject decodeByteArray(Context context, byte[] data, boolean isMulti, ModelLoaderListener listener) {
 
         ModelObject modelObject = null;
 
         if (modelType.equals("obj")) {
-            modelObject = new ObjObject(data, context, ModelObject.DRAW_MODEL, listener);
+            if (isMulti)
+                modelObject = new ObjProObject(data, context, ModelObject.DRAW_MODEL, listener);
+            else
+                modelObject = new ObjObject(data, context, ModelObject.DRAW_MODEL, listener);
         } else if (modelType.equals("stl")) {
             modelObject = new StlObject(data, context, ModelObject.DRAW_MODEL, listener);
         } else if (modelType.equals("3ds")) {
