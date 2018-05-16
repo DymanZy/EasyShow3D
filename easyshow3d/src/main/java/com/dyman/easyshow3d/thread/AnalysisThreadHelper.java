@@ -1,8 +1,11 @@
 package com.dyman.easyshow3d.thread;
 
+import android.util.Log;
+
 import com.dyman.easyshow3d.bean.ObjProObject;
 import com.dyman.easyshow3d.imp.ModelLoaderListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -99,7 +102,40 @@ public class AnalysisThreadHelper {
      *  解析结果的回调，分顶点解析的回调和面解析的回调
      */
     private IAnalysisFinishCallback finishCallback = new IAnalysisFinishCallback() {
-        //TODO 进度更新怎么破？
+        float temp, progress;
+        int[] vThreadNums = new int[threadNum];
+        int[] fThreadNums = new int[threadNum];
+        DecimalFormat df = new DecimalFormat("#.00");
+
+        @Override
+        public void verticeProgressUpdate(int threadID, int nums) {
+            vThreadNums[threadID] = nums;
+            temp = 0;
+            for (int num : vThreadNums) {
+                temp += num;
+            }
+            temp = temp / (float) (vLineNum + fLineNum);
+            temp = Float.valueOf(df.format(temp));
+            if (temp - progress > 0.01) {
+                progress = temp;
+                listener.loadedUpdate(progress);
+            }
+        }
+
+        @Override
+        public void faceProgressUpdate(int threadID, int nums) {
+            fThreadNums[threadID] = nums;
+            temp = 0;
+            for (int num : fThreadNums) {
+                temp += num;
+            }
+            temp = (temp + vLineNum) / (float) (vLineNum + fLineNum);
+            temp = Float.valueOf(df.format(temp));
+            if (temp - progress > 0.01) {
+                progress = temp;
+                listener.loadedUpdate(progress);
+            }
+        }
 
         @Override
         public void alvFinish(int threadID, int index, ArrayList<Float> alvList) {
@@ -121,7 +157,6 @@ public class AnalysisThreadHelper {
                     }
                     fThreads[i].start();
                 }
-
             }
         }
 

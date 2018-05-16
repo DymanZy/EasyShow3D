@@ -127,7 +127,10 @@ public class FaceThread extends Thread {
                     //将集合放进HsahMap中
                     hmn.put(tempInxex, hsn);
                 }
+            }
 
+            if ((i - start) % 100 == 0) {
+                finishCallback.faceProgressUpdate(threadID, i - start);
             }
         }
 

@@ -19,7 +19,6 @@ public class VerticesThread extends Thread {
     private int threadID;
     /** 解析完成的回调 */
     private IAnalysisFinishCallback finishCallback;
-    private long beginTime;
     private boolean isFinish = false;
 
 
@@ -29,7 +28,6 @@ public class VerticesThread extends Thread {
         this.start = start;
         this.end = end;
         this.finishCallback = finishCallback;
-        this.beginTime = System.currentTimeMillis();
     }
 
 
@@ -43,6 +41,10 @@ public class VerticesThread extends Thread {
                 alv.add(Float.parseFloat(tempsa[1]));
                 alv.add(Float.parseFloat(tempsa[2]));
                 alv.add(Float.parseFloat(tempsa[3]));
+            }
+
+            if ((i - start) % 100 == 0) {
+                finishCallback.verticeProgressUpdate(threadID, i - start);
             }
         }
         isFinish = true;
