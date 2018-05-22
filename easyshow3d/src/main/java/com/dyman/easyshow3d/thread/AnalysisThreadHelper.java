@@ -174,7 +174,9 @@ public class AnalysisThreadHelper {
 
     synchronized private boolean vThreadAllFinish() {
         for (VerticesThread thread : vThreads) {
-            if (!thread.isFinish()) return false;
+            if (!thread.isFinish()) {
+                return false;
+            }
         }
         return true;
     }

@@ -14,6 +14,8 @@ import com.dyman.easyshow3d.utils.FileUtils;
 import java.io.File;
 import java.io.IOException;
 
+import javax.security.auth.login.LoginException;
+
 /**
  * Created by dyman on 2017/9/13.
  */
@@ -25,7 +27,7 @@ public class ModelFactory {
     private static String modelType;
     private static ModelObject modelObject;
 
-    public static void decodeFile(Context context, String filePath, boolean isMulti, ModelLoaderListener listener) {
+    public static void decodeFile(Context context, String filePath, ModelLoaderListener listener) {
 
         if (FileUtils.isNullString(filePath)) {
             throw new IllegalArgumentException("filePath can't be null!");
@@ -44,19 +46,38 @@ public class ModelFactory {
             return;
         }
 
-        modelObject = decodeByteArray(context, modelBytes, isMulti, listener);
+        modelObject = decodeByteArray(context, modelBytes, listener);
     }
 
 
-    private static ModelObject decodeByteArray(Context context, byte[] data, boolean isMulti, ModelLoaderListener listener) {
+    public static void multiTest(Context context, String filePath, ModelLoaderListener listener) {
+        modelType = FileUtils.getType(filePath).toLowerCase();
+        File file = new File(filePath);
+        try {
+            modelBytes = FileUtils.getFileBytes(context, Uri.fromFile(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (modelBytes == null) {
+            listener.loaderFailure();
+            return;
+        }
+
+        if (modelType.equals("obj")) {
+            modelObject = new ObjProObject(modelBytes, context, ModelObject.DRAW_MODEL, listener);
+        } else {
+            Log.e(TAG, "multiTest:  " + FileUtils.getName(filePath) + " file type must be .obj");
+        }
+    }
+
+
+    private static ModelObject decodeByteArray(Context context, byte[] data, ModelLoaderListener listener) {
 
         ModelObject modelObject = null;
 
         if (modelType.equals("obj")) {
-            if (isMulti)
-                modelObject = new ObjProObject(data, context, ModelObject.DRAW_MODEL, listener);
-            else
-                modelObject = new ObjObject(data, context, ModelObject.DRAW_MODEL, listener);
+            modelObject = new ObjObject(data, context, ModelObject.DRAW_MODEL, listener);
         } else if (modelType.equals("stl")) {
             modelObject = new StlObject(data, context, ModelObject.DRAW_MODEL, listener);
         } else if (modelType.equals("3ds")) {

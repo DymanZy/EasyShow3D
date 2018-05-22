@@ -94,10 +94,10 @@ public class ObjObject extends ModelObject{
     @Override
     public void parseModel(byte[] data, Context context) {
 
-        alv = new ArrayList<Float>();
-        alFaceIndex = new ArrayList<Integer>();
-        alvResult = new ArrayList<Float>();
-        hmn = new HashMap<Integer,HashSet<Normal>>();
+        alv = new ArrayList<>();
+        alFaceIndex = new ArrayList<>();
+        alvResult = new ArrayList<>();
+        hmn = new HashMap<>();
 
         task = new AsyncTask<byte[], Integer, float[]>() {
             @Override
